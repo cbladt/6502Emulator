@@ -5,4 +5,4 @@ project(Source LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(Source main.cpp)
+add_executable(Source Main.cpp)
