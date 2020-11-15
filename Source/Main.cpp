@@ -3,23 +3,12 @@
 #include <iostream>
 
 #include "Bus.hpp"
-
-template <uint16_t Size, uint16_t Start, uint16_t End>
-struct RAM
-{
-    std::array<uint8_t, Size> Data = {0};
-    static const constexpr uint16_t AddressRangeStart = Start;
-    static const constexpr uint16_t AddressRangeEnd = End;
-    void Accept(uint16_t address, uint8_t data)
-    {
-        std::cout << address << "->" << std::to_string(data) << std::endl;
-    }
-};
+#include "GenericMemory.hpp"
 
 int main()
 {    
-    using RAM_t = RAM<0x2000, 0x0000, 0x1FFF>;
-    using RAM2_t = RAM<0x2000, 0x2000, 0x3FFF>;
+    using RAM_t = GenericMemory<0x2000, 0x0000, 0x1FFF>;
+    using RAM2_t = GenericMemory<0x2000, 0x2000, 0x3FFF>;
     RAM_t ram;
     RAM2_t ramB;
 
