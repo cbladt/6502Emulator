@@ -11,7 +11,7 @@ public:
 
     void Accept(uint16_t address, uint8_t data)
     {
-        Log::Error() << address << "->" << data << Log::EndLine;
+        Log::Debug() << address << "->" << data << Log::EndLine;
     }
 
 private:

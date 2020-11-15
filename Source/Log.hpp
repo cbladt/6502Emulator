@@ -5,6 +5,9 @@ namespace Log
 {
     namespace _private
     {
+        struct EndLine_t
+        {};
+
         template <bool Enabled>
         class Logger
         {
@@ -23,18 +26,30 @@ namespace Log
             {
                 if constexpr(Enabled)
                 {
-                    std::cout << message;
+                    if constexpr(std::is_arithmetic_v<T>)
+                    {
+                        std::cout << std::to_string(message);
+                    }
+                    else if constexpr(std::is_same_v<typename std::remove_cv<T>::type, EndLine_t>)
+                    {
+                        std::cout << std::endl;
+                    }
+                    else
+                    {
+                        std::cout << message;
+                    }
                 }
 
                 return *this;
-            }
+            }                               
         };
 
         Logger<true> _realLogger;
         Logger<false> _fakeLogger;
+        EndLine_t _endLine;
     }
 
-    constexpr const auto EndLine = "\r\n";
+    constexpr const auto EndLine = _private::_endLine;
 
     enum class Level
     {
@@ -48,7 +63,7 @@ namespace Log
     constexpr const Level LogLevel = Level::Error;
 #endif
 
-    constexpr bool IsEnabled(const Level test)
+    constexpr auto IsEnabled(const Level test)
     {
         return test >= LogLevel;
     }
