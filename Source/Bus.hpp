@@ -27,9 +27,9 @@ private:
     template <typename T>
     void DoTransmit(Address_t address, Data_t data, T& t)
     {
-        if (address >= t.AddressRangeStart && address < t.AddressRangeEnd)
+        if (t.BusWithinRange(address))
         {
-            t.Accept(address, data);
+            t.BusAccept(address, data);
         }
     }
 };
