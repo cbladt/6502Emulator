@@ -58,14 +58,13 @@ namespace SixFiveOhTwo
             _stackPointer = DefaultStackPointer;
 
             _flags = Flags();
-            _flags.Unused = true;
+            _flags.SetUnused();
 
             _cyclesLeft = 8;
         }
 
         void InterruptRequest()
         {
-            if (_flags.)
         }
 
         void NonMaskableInterruptRequest()

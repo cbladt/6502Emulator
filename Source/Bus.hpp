@@ -5,31 +5,55 @@ template <typename Address_t, typename Data_t, typename ... Device_t>
 class Bus
 {
 public:
-    Bus(Device_t ... devices) :
+    using AddressType = Address_t;
+    using DataType = Data_t;
+    using DeviceType = Device_t;
+
+    constexpr Bus(DeviceType ... devices) :
         _devices(devices...)
     {}
     ~Bus() = default;
 
-    Bus(const Bus&) = delete;
-    Bus& operator=(const Bus&) = delete;
+    constexpr Bus(const Bus&) = delete;
+    constexpr Bus& operator=(const Bus&) = delete;
 
-    Bus(Bus&&) = delete;
-    Bus& operator=(Bus&&) = delete;
+    constexpr Bus(Bus&&) = delete;
+    constexpr Bus& operator=(Bus&&) = delete;
 
-    void Transmit(Address_t address, Data_t data)
+    constexpr void Clock()
     {
-        std::apply([this, address, data](auto&&... args) {(DoTransmit(address, data, args), ...);}, _devices);
+        std::apply([this](auto&&... args) {(DoClock(args), ...);}, _devices);
+    }
+
+    constexpr void SetAddress(AddressType address)
+    {
+        _address = address;
+    }
+
+    constexpr AddressType GetAddress() const
+    {
+        return _address;
+    }
+
+    constexpr void SetData(DataType data)
+    {
+        _data = data;
+    }
+
+    constexpr DataType GetData() const
+    {
+        return _data;
     }
 
 private:
-    std::tuple<Device_t ...> _devices;
+    std::tuple<DeviceType ...> _devices;
+
+    AddressType _address;
+    DataType _data;
 
     template <typename T>
-    void DoTransmit(Address_t address, Data_t data, T& t)
-    {
-        if (t.BusWithinRange(address))
-        {
-            t.BusAccept(address, data);
-        }
+    constexpr void DoClock(T& t)
+    {        
+        t.ClockEvent();
     }
 };
