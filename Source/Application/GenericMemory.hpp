@@ -47,16 +47,12 @@ private:
     void Read(uint16_t address)
     {
         auto value = _data[address];
-        _bus.SetData(value);
-
-        Log::Debug() << "Memory Read - Address: " << address << ", value: " << value << Log::EndLine;
+        _bus.SetData(value);        
     }
 
     void Write(uint16_t address)
     {
         auto value = _bus.GetData();
         _data[address] = value;
-
-        Log::Debug() << "Memory Write - Address: " << address << ", value: " << value << Log::EndLine;
     }
 };

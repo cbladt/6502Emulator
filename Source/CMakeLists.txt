@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(Source LANGUAGES CXX)
+set(ProjectName Source)
+project(${ProjectName} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,7 +25,7 @@ endif (DoLogDebug)
 
 # Toolchain
 # TODO Move to seperate toolchain file?
-set(Path "C:\\MinGW\\bin\\")
+set(Path "D:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\")
 set(gcc "${Path}gcc")
 set(g++ "${Path}g++")
 set(tc ${gcc})
@@ -38,7 +39,10 @@ SET(CMAKE_C_ARCHIVE_FINISH true)
 SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
 SET(CMAKE_CXX_ARCHIVE_FINISH true)
 
-set(TARGET Source)
-add_executable(${TARGET} Main.cpp)
-target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/mingw_threads)
+# Find Sources
+add_subdirectory("Application")
+add_subdirectory("SixFiveOhTwo")
+
+# Create Exe
+target_link_libraries(${ProjectName} SixFiveOhTwoLib)
+target_link_libraries(${ProjectName} ApplicationLib)
