@@ -1,4 +1,4 @@
-set(ApplicationSource "Main.cpp")
+set(ApplicationSource "Run.cpp")
 
 add_library(ApplicationLib STATIC ${ApplicationSource})
 

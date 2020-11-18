@@ -24,7 +24,7 @@ namespace SixFiveOhTwo
             _enable = true;
         }
 
-        constexpr void Disale()
+        constexpr void Disable()
         {
             _enable = false;
         }

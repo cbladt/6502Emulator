@@ -44,5 +44,6 @@ add_subdirectory("Application")
 add_subdirectory("SixFiveOhTwo")
 
 # Create Exe
+add_executable(${ProjectName} Main.cpp)
 target_link_libraries(${ProjectName} SixFiveOhTwoLib)
 target_link_libraries(${ProjectName} ApplicationLib)
