@@ -1,26 +1,30 @@
 #include <cstdint>
 #include <array>
 #include <iostream>
+#include <mingw.thread.h>
 
 #include "Bus.hpp"
 #include "GenericMemory.hpp"
+#include <SixFiveOhTwo/Cpu.hpp>
+#include <Clock/Event.hpp>
+
+using Ram_t = GenericMemory<0x2000, 0x0000, 0x1FFF>;
 
 int main()
-{    
-    using RAM_t = GenericMemory<0x2000, 0x0000, 0x1FFF>;
-    using RAM2_t = GenericMemory<0x2000, 0x2000, 0x3FFF>;
-    RAM_t ram;
-    RAM2_t ramB;
+{        
+    Bus bus;
 
-    Bus<uint16_t, uint8_t, RAM_t, RAM2_t> bus(ram, ramB);
-    bus.Transmit(0x0000, 0x12);
-    bus.Transmit(0x0001, 0x13);
-    bus.Transmit(0x0002, 0x14);
-    bus.Transmit(0x0003, 0x15);
+    Ram_t ram(bus);    
 
-    bus.Transmit(0x2000, 0x12);
-    bus.Transmit(0x2001, 0x13);
-    bus.Transmit(0x2002, 0x14);
-    bus.Transmit(0x2003, 0x15);
+    SixFiveOhTwo::Cpu cpu(bus);
+
+    Clock::Event<Ram_t, SixFiveOhTwo::Cpu> clock(ram, cpu);
+
+    while (true)
+    {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        clock.Fire();
+    }
+
     return 0;
 }

@@ -4,7 +4,7 @@ project(Source LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_VERBOSE_MAKEFILE OFF)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(DoLogDebug ON)
 
 set(Flags "-Werror -flto -Wl,-flto")
@@ -38,5 +38,7 @@ SET(CMAKE_C_ARCHIVE_FINISH true)
 SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
 SET(CMAKE_CXX_ARCHIVE_FINISH true)
 
-add_executable(Source Main.cpp)
-target_include_directories(Source PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+set(TARGET Source)
+add_executable(${TARGET} Main.cpp)
+target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/mingw_threads)

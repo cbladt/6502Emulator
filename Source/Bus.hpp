@@ -1,16 +1,22 @@
 #pragma once
-#include <tuple>
+#include <cstdint>
 
-template <typename Address_t, typename Data_t, typename ... Device_t>
 class Bus
 {
 public:
-    using AddressType = Address_t;
-    using DataType = Data_t;
-    using DeviceType = Device_t;
+    using AddressType = std::uint16_t;
+    using DataType = std::uint8_t;
 
-    constexpr Bus(DeviceType ... devices) :
-        _devices(devices...)
+    enum class Operation
+    {
+        Read,
+        Write
+    };
+
+    constexpr Bus() :
+        _address(0),
+        _data(0),
+        _operation(Operation::Read)
     {}
     ~Bus() = default;
 
@@ -19,11 +25,6 @@ public:
 
     constexpr Bus(Bus&&) = delete;
     constexpr Bus& operator=(Bus&&) = delete;
-
-    constexpr void Clock()
-    {
-        std::apply([this](auto&&... args) {(DoClock(args), ...);}, _devices);
-    }
 
     constexpr void SetAddress(AddressType address)
     {
@@ -45,15 +46,18 @@ public:
         return _data;
     }
 
-private:
-    std::tuple<DeviceType ...> _devices;
+    constexpr void SetOperation(Operation operation)
+    {
+        _operation = operation;
+    }
 
+    constexpr Operation GetOperation() const
+    {
+        return _operation;
+    }
+
+private:    
     AddressType _address;
     DataType _data;
-
-    template <typename T>
-    constexpr void DoClock(T& t)
-    {        
-        t.ClockEvent();
-    }
+    Operation _operation;
 };
