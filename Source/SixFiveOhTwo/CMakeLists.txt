@@ -11,6 +11,6 @@ set(SixFiveOhTwoHeader
 
 add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader})
 
-target_include_directories(${SixFiveOhTwoLib} PRIVATE .)
+target_include_directories(${SixFiveOhTwoLib} PUBLIC .)
 
 target_link_libraries(${SixFiveOhTwoLib} UtilityLib BusLib)

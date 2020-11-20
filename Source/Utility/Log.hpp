@@ -44,9 +44,9 @@ namespace Log
             }                               
         };
 
-        Logger<true> _realLogger;
-        Logger<false> _fakeLogger;
-        EndLine_t _endLine;
+        static Logger<true> _realLogger;
+        static Logger<false> _fakeLogger;
+        static EndLine_t _endLine;
     }
 
     constexpr const auto EndLine = _private::_endLine;
@@ -58,9 +58,9 @@ namespace Log
     };
 
 #ifdef LOG_DEBUG
-    constexpr const Level LogLevel = Level::Debug;
+    constexpr const auto LogLevel = Level::Debug;
 #else
-    constexpr const Level LogLevel = Level::Error;
+    constexpr const auto LogLevel = Level::Error;
 #endif
 
     constexpr auto IsEnabled(const Level test)
@@ -68,7 +68,7 @@ namespace Log
         return test >= LogLevel;
     }
 
-    auto& Debug()
+    constexpr auto& Debug()
     {
         if constexpr(IsEnabled(Level::Debug))
         {
@@ -80,7 +80,7 @@ namespace Log
         }
     }
 
-    auto& Error()
+    constexpr auto& Error()
     {
         if constexpr(IsEnabled(Level::Error))
         {

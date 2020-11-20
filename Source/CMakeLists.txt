@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(ProjectName Source)
+set(ProjectName SourceApplication)
 project(${ProjectName} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(DoLogDebug ON)
-cmake_policy(SET CMP0069 NEW)
-cmake_policy(SET CMP0079 NEW)
 
 set(Flags "-Werror -flto -Wl,-flto")
 set(FlagsDebug "-O0")
@@ -27,15 +25,18 @@ endif (DoLogDebug)
 
 # Toolchain
 # TODO Move to seperate toolchain file?
-set(Path "D:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\")
+#set(Path "D:\\Program Files\\mingw-w64\\x86_64-8.1.0-posix-seh-rt_v6-rev0\\mingw64\\bin\\")
+#set(Ext ".exe")
+set(Path "/usr/bin/")
+
 set(gcc "${Path}gcc")
 set(g++ "${Path}g++")
 set(tc ${gcc})
-set(CMAKE_C_COMPILER "${gcc}.exe")
-set(CMAKE_CXX_COMPILER "${g++}.exe")
-set(CMAKE_AR "${tc}-ar.exe")
-set(CMAKE_NM "${tc}-nm.exe")
-set(CMAKE_RANLIB "${tc}-ranlib.exe")
+set(CMAKE_C_COMPILER "${gcc}${Ext}")
+set(CMAKE_CXX_COMPILER "${g++}${Ext}")
+set(CMAKE_AR "${tc}-ar${Ext}")
+set(CMAKE_NM "${tc}-nm${Ext}")
+set(CMAKE_RANLIB "${tc}-ranlib${Ext}")
 SET(CMAKE_C_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
 SET(CMAKE_C_ARCHIVE_FINISH true)
 SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
