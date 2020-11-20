@@ -6,7 +6,6 @@ set(SixFiveOhTwoSource
 
 set(SixFiveOhTwoHeader
     "Cpu.hpp"
-    "Flags.hpp"
 )
 
 add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader})

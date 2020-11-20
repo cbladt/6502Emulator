@@ -1,9 +1,14 @@
 #pragma once
 #include <cstdint>
+#include <tuple>
 
 #include <Log.hpp>
 #include <Bus.hpp>
-#include <Flags.hpp>
+
+#include <CpuState.hpp>
+
+#include <Tasks/Reset.hpp>
+#include <Tasks/Interrupt.hpp>
 
 namespace SixFiveOhTwo
 {    
@@ -19,38 +24,57 @@ namespace SixFiveOhTwo
         Cpu(Cpu&&) = delete;
         Cpu& operator=(Cpu&&) = delete;
 
-        constexpr void Enable()
-        {
-            _enable = true;
-        }
-
-        constexpr void Disable()
-        {
-            _enable = false;
-        }
-
         void ClockEvent();
 
-        void Reset();
+        uint8_t RegisterA;
+        uint8_t RegisterX;
+        uint8_t RegisterY;
+        uint8_t StackPointer;
+        uint16_t ProgramCounter;
+        uint8_t CyclesLeft;
+        bool Enable;
+        bool CarryBit;
+        bool Zero;
+        bool DisableInterrupts;
+        bool DecimalMode;
+        bool Brk;
+        bool Unused;
+        bool Overflow;
+        bool Negative;
 
-        void InterruptRequest();
+        bool ResetPin;
+        bool InterruptRequestPin;
+        bool NonMaskableInterruptRequestPin;
 
-        void NonMaskableInterruptRequest();
-
-    private:
-        uint8_t _registerA;
-        uint8_t _registerX;
-        uint8_t _registerY;
-        uint8_t _stackPointer;
-        uint16_t _programCounter;
-        uint8_t _cyclesLeft;
-        bool _enable;
-
+    private:        
         Bus& _bus;
 
-        Flags _flags;
+        enum class CpuState
+        {
+            None,
+            Reset,
+            Interrupt,
+            DecodeInstruction,
+            Instruction,
+        };
+
+        CpuState _state;
+        uint8_t _currentOpCode;
+
+        Tasks::Reset _tasksReset;
+        Tasks::Interrupt _tasksInterrupt;
 
         static constexpr uint16_t DefaultAddress = 0x1FCC;
         static constexpr uint8_t DefaultStackPointer = 0xFD;
+
+        void Foo();
+
+        void Reset();
+
+        void Interrupt();
+
+        void DecodeInstruction();
+
+        void Instruction();
     };
 }
