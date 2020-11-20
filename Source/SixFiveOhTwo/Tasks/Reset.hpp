@@ -1,13 +1,13 @@
 #pragma once
+#include <CpuRegisters.hpp>
+#include <Bus.hpp>
 
 namespace SixFiveOhTwo::Tasks
 {    
     class Reset
     {
     public:        
-        Reset(CpuRegisters& cpuRegisters) :
-            _cpuRegisters(cpuRegisters)
-        {}
+        Reset(CpuRegisters& cpuRegisters, Bus& bus);
         ~Reset() = default;
 
         Reset(const Reset&) = delete;
@@ -20,6 +20,7 @@ namespace SixFiveOhTwo::Tasks
 
     private:
         CpuRegisters& _cpuRegisters;
+        Bus& _bus;
     };
 }
 

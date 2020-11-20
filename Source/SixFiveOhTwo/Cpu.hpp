@@ -28,26 +28,16 @@ namespace SixFiveOhTwo
 
         constexpr void Enable()
         {
-            _enable = true;
+            _registers.SetEnable(true);
         }
 
         constexpr void Disable()
         {
-            _enable = false;
+            _registers.SetEnable(false);
         }
 
     private:        
         Bus& _bus;
-
-        bool _enable;
-        bool _carryBit;
-        bool _zero;
-        bool _disableInterrupts;
-        bool _decimalMode;
-        bool _break;
-        bool _unused;
-        bool _overflow;
-        bool _negative;
 
         bool _resetPin;
         bool _interruptRequestPin;
@@ -66,9 +56,6 @@ namespace SixFiveOhTwo
 
         Tasks::Reset _tasksReset;
         Tasks::Interrupt _tasksInterrupt;
-
-        static constexpr uint16_t DefaultAddress = 0x1FCC;
-        static constexpr uint8_t DefaultStackPointer = 0xFD;
 
         void ServiceUnknown();
 

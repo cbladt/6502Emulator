@@ -22,11 +22,11 @@ namespace Log
             Logger& operator=(Logger&&) = delete;
 
             template <typename T>
-            Logger<Enabled>& operator <<(T& message)
+            Logger<Enabled>& operator <<(T message)
             {
                 if constexpr(Enabled)
                 {
-                    if constexpr(std::is_arithmetic_v<T>)
+                    if constexpr(std::is_arithmetic_v<typename std::remove_cv<T>::type>)
                     {
                         std::cout << std::to_string(message);
                     }

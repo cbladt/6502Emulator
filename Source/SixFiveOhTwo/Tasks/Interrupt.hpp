@@ -1,15 +1,14 @@
 #pragma once
 
 #include <CpuRegisters.hpp>
+#include <Bus.hpp>
 
 namespace SixFiveOhTwo::Tasks
 {    
     class Interrupt
     {
     public:        
-        Interrupt(CpuRegisters& cpuRegisters) :
-            _cpuRegisters(cpuRegisters)
-        {}
+        Interrupt(CpuRegisters& cpuRegisters, Bus& bus);
         ~Interrupt() = default;
 
         Interrupt(const Interrupt&) = delete;
@@ -18,11 +17,13 @@ namespace SixFiveOhTwo::Tasks
         Interrupt(Interrupt&&) = delete;
         Interrupt& operator=(Interrupt&&) = delete;
 
-        bool IsActive() const;
         void ClockEvent();
 
     private:
         CpuRegisters& _cpuRegisters;
+        Bus& _bus;
+
+        void PushToStackAsync(uint8_t value);
     };
 }
 

@@ -2,6 +2,8 @@ set(SixFiveOhTwoLib SixFiveOhTwoLib)
 
 set(SixFiveOhTwoSource
     "Cpu.cpp"    
+    "Tasks/Reset.cpp"
+    "Tasks/Interrupt.cpp"
 )
 
 set(SixFiveOhTwoHeader
