@@ -45,7 +45,7 @@ SET(CMAKE_CXX_ARCHIVE_FINISH true)
 # Find Sources
 add_subdirectory("Bus")
 add_subdirectory("Clock")
-add_subdirectory("utility")
+add_subdirectory("Utility")
 add_subdirectory("SixFiveOhTwo")
 
 # Create Exe

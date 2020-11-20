@@ -1,11 +1,13 @@
 #pragma once
 
 namespace SixFiveOhTwo::Tasks
-{
+{    
     class Reset
     {
-    public:
-        Reset();
+    public:        
+        Reset(CpuRegisters& cpuRegisters) :
+            _cpuRegisters(cpuRegisters)
+        {}
         ~Reset() = default;
 
         Reset(const Reset&) = delete;
@@ -15,6 +17,9 @@ namespace SixFiveOhTwo::Tasks
         Reset& operator=(Reset&&) = delete;
 
         void ClockEvent();
+
+    private:
+        CpuRegisters& _cpuRegisters;
     };
 }
 

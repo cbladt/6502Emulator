@@ -3,86 +3,76 @@
 namespace SixFiveOhTwo
 {
     Cpu::Cpu(Bus& bus) :        
-        RegisterA(0),
-        RegisterX(0),
-        RegisterY(0),
-        StackPointer(0),
-        ProgramCounter(0),
-        CyclesLeft(0),
-        Enable(0),
-        CarryBit(0),
-        Zero(0),
-        DisableInterrupts(0),
-        DecimalMode(0),
-        Brk(0),
-        Unused(0),
-        Overflow(0),
-        Negative(0),
-        ResetPin(0),
-        InterruptRequestPin(0),
-        NonMaskableInterruptRequestPin(0),
+        _enable(0),
+        _carryBit(0),
+        _zero(0),
+        _disableInterrupts(0),
+        _decimalMode(0),
+        _break(0),
+        _unused(0),
+        _overflow(0),
+        _negative(0),
         _bus(bus),
-        _state(CpuState::None)
+        _resetPin(0),
+        _interruptRequestPin(0),
+        _nonMaskableInterruptRequestPin(0),
+        _state(State::Unknown),
+        _tasksReset(_registers),
+        _tasksInterrupt(_registers)
     {}
 
-    void Cpu::Foo()
+    void Cpu::ServiceUnknown()
     {
-        if (ResetPin)
+        if (_resetPin)
         {
-            _state = CpuState::Reset;
+            _state = State::Reset;
         }
-        else if (InterruptRequestPin && (!DisableInterrupts))
+        else if (_interruptRequestPin && (!_disableInterrupts))
         {
-            _state = CpuState::Interrupt;
+            _state = State::Interrupt;
         }
-        else if (NonMaskableInterruptRequestPin)
+        else if (_nonMaskableInterruptRequestPin)
         {
-            _state = CpuState::Instruction;
+            _state = State::Interrupt;
         }
         else
         {
-            _state = CpuState::DecodeInstruction;
+            _state = State::Instruction;
         }
 
-        CyclesLeft = 1;
+        _registers.CyclesLeft = 1;
     }
 
-    void Cpu::Reset()
+    void Cpu::ServiceReset()
     {
         _tasksReset.ClockEvent();
     }
 
-    void Cpu::Interrupt()
+    void Cpu::ServiceInterrupt()
+    {
+        _tasksInterrupt.ClockEvent();
+    }
+
+    void Cpu::ServiceInstruction()
     {
         _tasksReset.ClockEvent();
-    }
-
-    void Cpu::DecodeInstruction()
-    {
-
-    }
-
-    void Cpu::Instruction()
-    {
-
     }
 
     void Cpu::ClockEvent()
     {
-        if (CyclesLeft == 0)
+        if (_registers.CyclesLeft == 0)
         {
-            _state = CpuState::None;
+            _state = State::Unknown;
         }
 
-        CyclesLeft--;
+        _registers.CyclesLeft--;
 
         switch (_state)
         {
-            case CpuState::None:                Foo(); break;
-            case CpuState::Reset:               Reset(); break;
-            case CpuState::Interrupt:           Interrupt(); break;
-            case CpuState::DecodeInstruction:   DecodeInstruction(); break;
-            case CpuState::Instruction:         Instruction(); break;
+            case State::Unknown:             ServiceUnknown(); break;
+            case State::Reset:               ServiceReset(); break;
+            case State::Interrupt:           ServiceInterrupt(); break;
+            case State::Instruction:         ServiceInstruction(); break;
         }
     }
 

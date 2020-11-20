@@ -5,7 +5,7 @@
 #include <Log.hpp>
 #include <Bus.hpp>
 
-#include <CpuState.hpp>
+#include <CpuRegisters.hpp>
 
 #include <Tasks/Reset.hpp>
 #include <Tasks/Interrupt.hpp>
@@ -26,40 +26,43 @@ namespace SixFiveOhTwo
 
         void ClockEvent();
 
-        uint8_t RegisterA;
-        uint8_t RegisterX;
-        uint8_t RegisterY;
-        uint8_t StackPointer;
-        uint16_t ProgramCounter;
-        uint8_t CyclesLeft;
-        bool Enable;
-        bool CarryBit;
-        bool Zero;
-        bool DisableInterrupts;
-        bool DecimalMode;
-        bool Brk;
-        bool Unused;
-        bool Overflow;
-        bool Negative;
+        constexpr void Enable()
+        {
+            _enable = true;
+        }
 
-        bool ResetPin;
-        bool InterruptRequestPin;
-        bool NonMaskableInterruptRequestPin;
+        constexpr void Disable()
+        {
+            _enable = false;
+        }
 
     private:        
         Bus& _bus;
 
-        enum class CpuState
+        bool _enable;
+        bool _carryBit;
+        bool _zero;
+        bool _disableInterrupts;
+        bool _decimalMode;
+        bool _break;
+        bool _unused;
+        bool _overflow;
+        bool _negative;
+
+        bool _resetPin;
+        bool _interruptRequestPin;
+        bool _nonMaskableInterruptRequestPin;
+
+        enum class State
         {
-            None,
+            Unknown,
             Reset,
-            Interrupt,
-            DecodeInstruction,
+            Interrupt,            
             Instruction,
         };
+        State _state;
 
-        CpuState _state;
-        uint8_t _currentOpCode;
+        CpuRegisters _registers;
 
         Tasks::Reset _tasksReset;
         Tasks::Interrupt _tasksInterrupt;
@@ -67,14 +70,12 @@ namespace SixFiveOhTwo
         static constexpr uint16_t DefaultAddress = 0x1FCC;
         static constexpr uint8_t DefaultStackPointer = 0xFD;
 
-        void Foo();
+        void ServiceUnknown();
 
-        void Reset();
+        void ServiceReset();
 
-        void Interrupt();
+        void ServiceInterrupt();
 
-        void DecodeInstruction();
-
-        void Instruction();
+        void ServiceInstruction();
     };
 }

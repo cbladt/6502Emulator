@@ -1,11 +1,13 @@
 set(SixFiveOhTwoLib SixFiveOhTwoLib)
 
 set(SixFiveOhTwoSource
-    "Cpu.cpp"
+    "Cpu.cpp"    
 )
 
 set(SixFiveOhTwoHeader
     "Cpu.hpp"
+    "Tasks/Reset.hpp"
+    "Tasks/Interrupt.hpp"
 )
 
 add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader})
