@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(DoLogDebug ON)
+cmake_policy(SET CMP0069 NEW)
+cmake_policy(SET CMP0079 NEW)
 
 set(Flags "-Werror -flto -Wl,-flto")
 set(FlagsDebug "-O0")
@@ -40,10 +42,14 @@ SET(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
 SET(CMAKE_CXX_ARCHIVE_FINISH true)
 
 # Find Sources
-add_subdirectory("Application")
+add_subdirectory("Bus")
+add_subdirectory("Clock")
+add_subdirectory("utility")
 add_subdirectory("SixFiveOhTwo")
 
 # Create Exe
 add_executable(${ProjectName} Main.cpp)
+target_link_libraries(${ProjectName} BusLib)
+target_link_libraries(${ProjectName} ClockLib)
+target_link_libraries(${ProjectName} UtilityLib)
 target_link_libraries(${ProjectName} SixFiveOhTwoLib)
-target_link_libraries(${ProjectName} ApplicationLib)

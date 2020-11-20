@@ -1,7 +1,16 @@
-set(SixFiveOhTwoSource "Cpu.cpp")
+set(SixFiveOhTwoLib SixFiveOhTwoLib)
 
-add_library(SixFiveOhTwoLib STATIC ${SixFiveOhTwoSource})
-
-target_include_directories(SixFiveOhTwoLib PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+set(SixFiveOhTwoSource
+    "Cpu.cpp"
 )
+
+set(SixFiveOhTwoHeader
+    "Cpu.hpp"
+    "Flags.hpp"
+)
+
+add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader})
+
+target_include_directories(${SixFiveOhTwoLib} PRIVATE .)
+
+target_link_libraries(${SixFiveOhTwoLib} UtilityLib BusLib)

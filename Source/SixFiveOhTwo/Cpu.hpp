@@ -3,7 +3,7 @@
 
 #include <Log.hpp>
 #include <Bus.hpp>
-#include <SixFiveOhTwo/Flags.hpp>
+#include <Flags.hpp>
 
 namespace SixFiveOhTwo
 {    
