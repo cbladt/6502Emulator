@@ -20,7 +20,7 @@ namespace SixFiveOhTwo::Tasks
         void ClockEvent();
 
     private:
-        CpuRegisters& _cpuRegisters;
+        CpuRegisters& _cpu;
         Bus& _bus;
 
         void PushToStackAsync(uint8_t value);

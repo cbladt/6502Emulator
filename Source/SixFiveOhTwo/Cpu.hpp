@@ -28,12 +28,12 @@ namespace SixFiveOhTwo
 
         constexpr void Enable()
         {
-            _registers.SetEnable(true);
+            _reg.Enable = true;
         }
 
         constexpr void Disable()
         {
-            _registers.SetEnable(false);
+            _reg.Enable = false;
         }
 
     private:        
@@ -52,7 +52,7 @@ namespace SixFiveOhTwo
         };
         State _state;
 
-        CpuRegisters _registers;
+        CpuRegisters _reg;
 
         Tasks::Reset _tasksReset;
         Tasks::Interrupt _tasksInterrupt;

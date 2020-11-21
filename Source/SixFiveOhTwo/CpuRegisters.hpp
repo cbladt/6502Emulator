@@ -3,6 +3,55 @@
 
 namespace SixFiveOhTwo
 {
+    template <typename T>
+    class Register
+    {
+    public:
+        Register() :
+            _value(0)
+        {}
+        ~Register() = default;
+
+        Register(const Register&) = delete;
+        Register& operator=(const Register&) = delete;
+
+        Register(Register&&) = delete;
+        Register& operator=(Register&&) = delete;
+
+        T Get() const
+        {
+            return _value;
+        }
+
+        void Set(T value)
+        {
+            _value = value;
+        }
+
+        void Incr(T value = 1)
+        {
+            _value += value;
+        }
+
+        void Decr(T value = 1)
+        {
+            _value -= value;
+        }
+
+        operator const T()
+        {
+            return _value;
+        }
+
+        void operator=(T value)
+        {
+            _value = value;
+        }
+
+    private:
+        T _value;
+    };
+
     class CpuRegisters
     {
     public:
@@ -19,14 +68,7 @@ namespace SixFiveOhTwo
         };
 
         CpuRegisters() :
-            _registerA(0),
-            _registerX(0),
-            _registerY(0),
-            _registerStatus(0),
-            _stackPointer(0),
-            _programCounter(0),
-            _cyclesLeft(0),
-            _enable(false)
+            Enable(false)
         {}
         ~CpuRegisters() = default;
 
@@ -36,133 +78,30 @@ namespace SixFiveOhTwo
         CpuRegisters(CpuRegisters&&) = delete;
         CpuRegisters& operator=(CpuRegisters&&) = delete;
 
-        constexpr auto GetRegisterA() const
+        inline auto GetFlag(Flags flag) const
         {
-            return _registerA;
+            return Status.Get() & flag;
         }
 
-        constexpr void SetRegisterA(uint8_t value)
-        {
-            _registerA = value;
-        }
-
-
-        constexpr auto GetRegisterX() const
-        {
-            return _registerX;
-        }
-
-        constexpr void SetRegisterX(uint8_t value)
-        {
-            _registerX = value;
-        }
-
-
-        constexpr auto GetRegisterY() const
-        {
-            return _registerY;
-        }
-
-        constexpr void SetRegisterY(uint8_t value)
-        {
-            _registerY = value;
-        }
-
-
-        constexpr auto GetRegisterStatus() const
-        {
-            return _registerStatus;
-        }
-
-        constexpr void SetRegisterStatus(uint8_t value)
-        {
-            _registerStatus = value;
-        }
-
-        constexpr auto GetRegisterStatusFlag(Flags flag) const
-        {
-            return _registerStatus & flag;
-        }
-
-        constexpr void SetRegisterStatusFlag(Flags flag, bool value)
+        inline void SetFlag(Flags flag, bool value)
         {
             if (value)
             {
-                _registerStatus |= flag;
+                Status = Status | flag;
             }
             else
             {
-                _registerStatus &= ~flag;
+                Status = Status & ~flag;
             }
-        }
+        }        
 
-
-        constexpr auto GetStackPointer() const
-        {
-            return _stackPointer;
-        }
-
-        constexpr void SetStackPointer(uint8_t value)
-        {
-            _stackPointer = value;
-        }
-
-        constexpr void DecrementStackPointer(uint8_t value = 1)
-        {
-            _stackPointer -= value;
-        }
-
-
-        constexpr auto GetProgramCounter() const
-        {
-            return _programCounter;
-        }
-
-        constexpr void SetProgramCounter(uint16_t value)
-        {
-            _programCounter = value;
-        }
-
-
-        constexpr auto GetCyclesLeft() const
-        {
-            return _cyclesLeft;
-        }
-
-        constexpr void SetCyclesLeft(uint8_t value)
-        {
-            _cyclesLeft = value;
-        }
-
-        constexpr void DecrementCyclesLeft(uint8_t value = 1)
-        {
-            _cyclesLeft -= value;
-        }
-
-        constexpr void IncrementCyclesLeft(uint8_t value = 1)
-        {
-            _cyclesLeft += value;
-        }
-
-
-        constexpr auto GetEnable() const
-        {
-            return _enable;
-        }
-
-        constexpr void SetEnable(bool value)
-        {
-            _enable = value;
-        }
-
-    private:
-        uint8_t _registerA;
-        uint8_t _registerX;
-        uint8_t _registerY;
-        uint8_t _registerStatus;
-        uint8_t _stackPointer;
-        uint16_t _programCounter;
-        uint8_t _cyclesLeft;
-        bool _enable;
+        Register<uint8_t> A;
+        Register<uint8_t> X;
+        Register<uint8_t> Y;
+        Register<uint8_t> Status;
+        Register<uint8_t> StackPointer;
+        Register<uint16_t> ProgramCounter;
+        Register<uint8_t> CyclesLeft;
+        bool Enable;
     };
 }

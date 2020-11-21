@@ -4,16 +4,16 @@
 namespace SixFiveOhTwo::Tasks
 {
     Interrupt::Interrupt(CpuRegisters& cpuRegisters, Bus& bus) :
-        _cpuRegisters(cpuRegisters),
+        _cpu(cpuRegisters),
         _bus(bus)
     {}
 
     void Interrupt::PushToStackAsync(uint8_t value)
     {
-        _bus.SetAddress(0x0100 + _cpuRegisters.GetStackPointer());
+        _bus.SetAddress(0x0100 + _cpu.StackPointer);
         _bus.SetData(value);
         _bus.SetOperation(Bus::Operation::Write);
-        _cpuRegisters.DecrementStackPointer();
+        _cpu.StackPointer.Decr();
     }
 
     template <typename Bus>
@@ -30,50 +30,51 @@ namespace SixFiveOhTwo::Tasks
 
     void Interrupt::ClockEvent()
     {
-        switch (_cpuRegisters.GetCyclesLeft())
+        switch (_cpu.CyclesLeft)
         {
             case 0:
             {
-                _cpuRegisters.IncrementCyclesLeft(8);
+                _cpu.CyclesLeft = 8;
                 break;
             }
             case 7:
-            {
-                auto pc = _cpuRegisters.GetProgramCounter();
-                PushToStackAsync((pc >> 8) & 0x00FF);
+            {                
+                PushToStackAsync((_cpu.ProgramCounter >> 8) & 0x00FF);
                 break;
             }
             case 6:
-            {
-                auto pc = _cpuRegisters.GetProgramCounter();
-                PushToStackAsync(pc & 0x00FF);
+            {                
+                PushToStackAsync(_cpu.ProgramCounter & 0x00FF);
                 break;
             }
             case 5:
             {
-                _cpuRegisters.SetRegisterStatusFlag(CpuRegisters::Break, false);
-                _cpuRegisters.SetRegisterStatusFlag(CpuRegisters::Unused, true);
-                _cpuRegisters.SetRegisterStatusFlag(CpuRegisters::DisableInterrupt, true);
+                _cpu.SetFlag(CpuRegisters::Break, false);
+                _cpu.SetFlag(CpuRegisters::Unused, true);
+                _cpu.SetFlag(CpuRegisters::DisableInterrupt, true);
 
-                PushToStackAsync(_cpuRegisters.GetRegisterStatus());
-
-                SetAddressLow(_bus);
+                PushToStackAsync(_cpu.Status);
                 break;
             }
             case 4:
             {
-                _cpuRegisters.SetRegisterX(_bus.GetData());
-                SetAddressHigh(_bus);
+                SetAddressLow(_bus);
                 break;
             }
             case 3:
             {
-                auto low = _cpuRegisters.GetRegisterX();
+                _cpu.X = _bus.GetData();
+                SetAddressHigh(_bus);
+                break;
+            }
+            case 2:
+            {
+                auto low = _cpu.X.Get();
                 auto high = _bus.GetData();
 
-                _cpuRegisters.SetProgramCounter((high << 8) | low);
+                _cpu.ProgramCounter = (high << 8) | low;
 
-                Log::Debug() << "Interrupting at " << _cpuRegisters.GetProgramCounter() << Log::EndLine;
+                Log::Debug() << "Interrupting at " << _cpu.ProgramCounter.Get() << Log::EndLine;
                 break;
             }
             default:
