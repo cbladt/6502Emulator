@@ -19,7 +19,7 @@ namespace SixFiveOhTwo
             _state = State::Reset;
             _resetPin = false;
         }        
-        else if ((_interruptRequestPin && (!_reg.GetFlag(CpuRegisters::DisableInterrupt))) || 1)
+        else if ((_interruptRequestPin && (!_reg.GetFlag(CpuRegisters::DisableInterrupt))))
         {
             _state = State::Interrupt;
             _interruptRequestPin = false;
@@ -34,7 +34,6 @@ namespace SixFiveOhTwo
             _state = State::Instruction;
         }
 
-        _reg.CyclesLeft = 1;
         ClockEvent();
     }
 
@@ -50,7 +49,8 @@ namespace SixFiveOhTwo
 
     void Cpu::ServiceInstruction()
     {
-        _tasksReset.ClockEvent();
+        //_tasksReset.ClockEvent();
+        Log::Debug() << "instruction stuff" << Log::EndLine;
     }
 
     void Cpu::ClockEvent()
@@ -60,13 +60,6 @@ namespace SixFiveOhTwo
             return;
         }
 
-        if (_reg.CyclesLeft == 0)
-        {
-            _state = State::Unknown;
-        }
-
-        _reg.CyclesLeft.Decr();
-
         Log::Debug() << "Clock: " << _reg.CyclesLeft.Get() << Log::EndLine;
         switch (_state)
         {
@@ -74,6 +67,13 @@ namespace SixFiveOhTwo
             case State::Reset:               ServiceReset(); break;
             case State::Interrupt:           ServiceInterrupt(); break;
             case State::Instruction:         ServiceInstruction(); break;
+        }
+
+        _reg.CyclesLeft.Decr();
+
+        if (_reg.CyclesLeft == 0)
+        {
+            _state = State::Unknown;
         }
     }
 }
