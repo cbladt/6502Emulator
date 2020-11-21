@@ -4,7 +4,7 @@ namespace SixFiveOhTwo
 {
     Cpu::Cpu(Bus& bus) :        
         _bus(bus),
-        _resetPin(false),
+        _resetPin(true),
         _interruptRequestPin(false),
         _nonMaskableInterruptRequestPin(false),
         _state(State::Unknown),
@@ -17,14 +17,17 @@ namespace SixFiveOhTwo
         if (_resetPin)
         {
             _state = State::Reset;
+            _resetPin = false;
         }        
         else if ((_interruptRequestPin && (!_reg.GetFlag(CpuRegisters::DisableInterrupt))) || 1)
         {
             _state = State::Interrupt;
+            _interruptRequestPin = false;
         }
         else if (_nonMaskableInterruptRequestPin)
         {
             _state = State::Interrupt;
+            _nonMaskableInterruptRequestPin = false;
         }
         else
         {
