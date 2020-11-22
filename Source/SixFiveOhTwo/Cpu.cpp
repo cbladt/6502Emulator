@@ -9,7 +9,8 @@ namespace SixFiveOhTwo
         _nonMaskableInterruptRequestPin(false),
         _state(State::Unknown),
         _tasksReset(_reg, _bus),
-        _tasksInterrupt(_reg, _bus)
+        _tasksInterrupt(_reg, _bus),
+        _tasksInstructionDecoding(_reg, _bus)
     {}
 
     void Cpu::ServiceUnknown()
@@ -49,8 +50,7 @@ namespace SixFiveOhTwo
 
     void Cpu::ServiceInstruction()
     {
-        //_tasksReset.ClockEvent();
-        Log::Debug() << "instruction stuff" << Log::EndLine;
+        _tasksInstructionDecoding.ClockEvent();
     }
 
     void Cpu::ClockEvent()

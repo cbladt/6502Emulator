@@ -9,6 +9,7 @@
 
 #include <Tasks/Reset.hpp>
 #include <Tasks/Interrupt.hpp>
+#include <Tasks/InstructionDecoding.hpp>
 
 namespace SixFiveOhTwo
 {    
@@ -56,6 +57,7 @@ namespace SixFiveOhTwo
 
         Tasks::Reset _tasksReset;
         Tasks::Interrupt _tasksInterrupt;
+        Tasks::InstructionDecoding _tasksInstructionDecoding;
 
         void ServiceUnknown();
 
