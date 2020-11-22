@@ -34,7 +34,5 @@ namespace SixFiveOhTwo::Tasks
         void OpcodeProbe();
         Opcode OpcodeGet();
         void OpcodeHandle(Opcode opcode);
-
-        Opcode TranslateOpcode(uint8_t opcodeRaw) const;
     };
 }

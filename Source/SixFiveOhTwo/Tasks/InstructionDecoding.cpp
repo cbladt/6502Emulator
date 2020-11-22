@@ -32,6 +32,11 @@ namespace SixFiveOhTwo::Tasks
         _bus.SetAddress(_cpu.ProgramCounter);
     }
 
+    Opcode TranslateOpcode(uint8_t opcodeRaw)
+    {
+        return static_cast<Opcode>(opcodeRaw);
+    }
+
     Opcode InstructionDecoding::OpcodeGet()
     {
         auto opcodeRaw = _bus.GetData();
@@ -43,10 +48,5 @@ namespace SixFiveOhTwo::Tasks
     void InstructionDecoding::OpcodeHandle(Opcode opcode)
     {
         (void)opcode;
-    }
-
-    Opcode InstructionDecoding::TranslateOpcode(uint8_t opcodeRaw) const
-    {
-        return static_cast<Opcode>(opcodeRaw);
     }
 }
