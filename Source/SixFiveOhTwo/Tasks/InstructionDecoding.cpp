@@ -1,4 +1,5 @@
 #include "InstructionDecoding.hpp"
+#include <Log>
 
 namespace SixFiveOhTwo::Tasks
 {
@@ -30,6 +31,7 @@ namespace SixFiveOhTwo::Tasks
     void InstructionDecoding::OpcodeProbe()
     {
         _bus.SetAddress(_cpu.ProgramCounter);
+        _state = State::OpcodeGetAndHandle;
     }
 
     Opcode TranslateOpcode(uint8_t opcodeRaw)
@@ -47,6 +49,14 @@ namespace SixFiveOhTwo::Tasks
 
     void InstructionDecoding::OpcodeHandle(Opcode opcode)
     {
-        (void)opcode;
+        switch (opcode)
+        {
+            default: // Fall-through to nop.
+            case Opcode::NoOperation:
+            {
+                Log::Debug() << "Nop" << Log::EndLine;
+                break;
+            }
+        }
     }
 }
