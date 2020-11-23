@@ -1,6 +1,7 @@
 #pragma once
+#include <CpuRegisters.hpp>
 
-namespace Opcodes
+namespace SixFiveOhTwo::Opcodes
 {
     class NoOperation
     {
@@ -13,6 +14,8 @@ namespace Opcodes
 
         NoOperation(NoOperation&&) = delete;
         NoOperation& operator=(NoOperation&&) = delete;
+
+        void Execute(CpuRegisters& cpu);
     };
 }
 

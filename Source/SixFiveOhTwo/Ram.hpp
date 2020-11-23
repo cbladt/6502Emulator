@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <array>
 
-static constexpr const size_t RamSize = 0x2000;
+static constexpr const size_t RamSize = 0xFFFF;
 
 class Ram
 {
@@ -18,12 +18,12 @@ public:
     constexpr Ram(Ram&&) = delete;
     constexpr Ram& operator=(Ram&&) = delete;
 
-    uint8_t Read(uint16_t address)
+    constexpr uint8_t Read(uint16_t address)
     {
         return _data.at(address);
     }
 
-    void Write(uint16_t address, uint8_t data)
+    constexpr void Write(uint16_t address, uint8_t data)
     {
         _data.at(address) = data;
     }

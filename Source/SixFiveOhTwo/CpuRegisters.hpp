@@ -19,6 +19,14 @@ namespace SixFiveOhTwo
         };
 
         CpuRegisters() :
+            A(0),
+            X(0),
+            Y(0),
+            Status(0),
+            StackPointer(0),
+            ProgramCounter(0),
+            CyclesLeft(0),
+            Opcode(0),
             Enable(false)
         {}
         ~CpuRegisters() = default;
@@ -53,6 +61,7 @@ namespace SixFiveOhTwo
         uint8_t StackPointer;
         uint16_t ProgramCounter;
         uint8_t CyclesLeft;
+        uint8_t Opcode;
         bool Enable;
     };
 }

@@ -8,8 +8,7 @@ namespace Clock
     {
     public:
         constexpr Generator() :
-            _frequency(FrequencyFactor / Frequency),
-            _worker([this]{Run();}),
+            _frequency(FrequencyFactor / Frequency),            
             _child(*static_cast<Child_t*>(this))
         {}
         ~Generator() = default;
@@ -20,16 +19,6 @@ namespace Clock
         Generator(Generator&&) = default;
         Generator& operator=(Generator&&) = default;
 
-        void Wait()
-        {
-            _worker.join();
-        }
-
-    private:
-        uint32_t _frequency;
-        std::thread _worker;
-        Child_t& _child;
-
         void Run()
         {
             while (true)
@@ -38,5 +27,9 @@ namespace Clock
                 std::this_thread::sleep_for(std::chrono::microseconds(_frequency));
             }
         }
+
+    private:
+        uint32_t _frequency;        
+        Child_t& _child;        
     };
 }

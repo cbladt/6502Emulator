@@ -4,7 +4,10 @@
 int main()
 {    
     SixFiveOhTwo::Cpu cpu;
-    cpu.Wait();
+    cpu.SetEnable();
+    cpu.Run();
+
+
 
     /*bus.SetAddress(0x1FCC);
     bus.SetData(0x39);

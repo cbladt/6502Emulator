@@ -29,24 +29,42 @@ namespace SixFiveOhTwo
 
         void Fire();
 
-        void DoReset();
-        bool MaybeInterrupt();
-        void DoInterrupt();
-        void DoEnable();
-        void DoDisable();
+        void Reset();
+        bool InterruptRequest();
+        void Interrupt();
+
+        constexpr void SetEnable()
+        {
+            Enable = true;
+        }
+
+        constexpr void SetDisable()
+        {
+            Enable = false;
+        }
 
     private:
+        static const constexpr auto ProgramCounterDefault = 0xFFFC;
+        static const constexpr auto ProgramCounterInterrupt = 0xFFFE;
+        static const constexpr auto ProgramCounterNonMaskInterrupt = 0xFFFA;
+        static const constexpr auto StackPointerStart = 0x100;
+        static const constexpr auto StackPointerDefault = 0xFD;
+
         Ram _ram;
+        constexpr void PushToStack(uint8_t value)
+        {
+            _ram.Write(StackPointerStart + StackPointer, value);
+            StackPointer--;
+        }
 
         void MaybeClock();
         void Clock();
 
-        void ServiceUnknown();
+        void DoInterrupt(uint16_t address);
 
-        void ServiceReset();
-
-        void ServiceInterrupt();
-
-        void ServiceInstruction();
+        constexpr void HandleOpcode()
+        {
+            std::apply([this](auto&&... args) {(args.Execute(*this), ...);}, _opcodes);
+        }
     };
 }

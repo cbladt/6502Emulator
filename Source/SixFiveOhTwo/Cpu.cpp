@@ -2,40 +2,74 @@
 #include <OpcodeIdentifier.hpp>
 
 namespace SixFiveOhTwo
-{    
+{       
     Cpu::Cpu()
-    {}
-
-    void Cpu::ServiceUnknown()
     {
-
-        //ClockEvent();
+        Reset();
     }
 
-    void Cpu::ServiceReset()
+    void Cpu::Reset()
     {
-        //_tasksReset.ClockEvent();
+        auto low = _ram.Read(ProgramCounterDefault);
+        auto high = _ram.Read(ProgramCounterDefault + 1);
+
+        ProgramCounter = (high << 8) | low;
+
+        A = 0;
+        X = 0;
+        Y = 0;
+
+        StackPointer = StackPointerDefault;
+        Status = 0;
+        SetFlag(Unused, true);
+
+        CyclesLeft = 8;
     }
 
-    void Cpu::ServiceInterrupt()
+    bool Cpu::InterruptRequest()
     {
-        //_tasksInterrupt.ClockEvent();
+        if (!GetFlag(DisableInterrupt))
+        {
+            DoInterrupt(ProgramCounterInterrupt);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    void Cpu::ServiceInstruction()
+    void Cpu::Interrupt()
     {
-        //_tasksInstructionDecoding.ClockEvent();
+        DoInterrupt(ProgramCounterNonMaskInterrupt);
+    }
+
+    void Cpu::DoInterrupt(uint16_t address)
+    {
+        PushToStack((ProgramCounter >> 8) & 0x00FF);
+        PushToStack(ProgramCounter & 0x00FF);
+
+        SetFlag(Break, false);
+        SetFlag(Unused, true);
+        SetFlag(DisableInterrupt, true);
+
+        PushToStack(Status);
+
+        auto pcLow = _ram.Read(address);
+        auto pcHigh = _ram.Read(address + 1);
+        ProgramCounter = (pcHigh << 8) | pcLow;
+
+        CyclesLeft = 7;
     }
 
     void Cpu::Clock()
     {
-        auto opcode = GetOpcode(_ram.Read(ProgramCounter));
+        Opcode = _ram.Read(ProgramCounter);
         ProgramCounter++;
 
         SetFlag(Unused, true);
 
-
-
+        HandleOpcode();
     }
 
     void Cpu::MaybeClock()

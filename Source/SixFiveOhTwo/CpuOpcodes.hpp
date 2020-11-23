@@ -1,35 +1,17 @@
 #pragma once
-#include <variant>
+#include <tuple>
 #include <Log>
 
 #include <Opcodes/NoOperation.hpp>
 
-class CpuOpcodes
+namespace SixFiveOhTwo
 {
-protected:
-    enum class Id
+    class CpuOpcodes
     {
-        Nop,
+    protected:
+
+        std::tuple<
+            Opcodes::NoOperation
+        > _opcodes;
     };
-
-    using OpcodeType = std::variant<
-    Opcodes::NoOperation*,
-    int
-    >;
-
-    Opcodes::NoOperation _nop;
-
-    template <typename Lookup_t>
-    OpcodeType& GetOpcode(Lookup_t lookup)
-    {
-        auto id = static_cast<Id>(lookup);
-
-        switch(id)
-        {
-            case Id::Nop: return _nop;
-        }
-
-        Log::Error() << "Invalid Opcode: " << byte << Log::EndLine;
-    }
-
-};
+}
