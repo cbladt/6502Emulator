@@ -1,6 +1,5 @@
 #pragma once
 #include <CpuRegisters.hpp>
-#include <Bus.hpp>
 
 namespace SixFiveOhTwo::Tasks
 {    

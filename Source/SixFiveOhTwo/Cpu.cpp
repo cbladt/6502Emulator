@@ -1,79 +1,58 @@
 #include "Cpu.hpp"
+#include <OpcodeIdentifier.hpp>
 
 namespace SixFiveOhTwo
-{
-    Cpu::Cpu(Bus& bus) :        
-        _bus(bus),
-        _resetPin(true),
-        _interruptRequestPin(false),
-        _nonMaskableInterruptRequestPin(false),
-        _state(State::Unknown),
-        _tasksReset(_reg, _bus),
-        _tasksInterrupt(_reg, _bus),
-        _tasksInstructionDecoding(_reg, _bus)
+{    
+    Cpu::Cpu()
     {}
 
     void Cpu::ServiceUnknown()
     {
-        if (_resetPin)
-        {
-            _state = State::Reset;
-            _resetPin = false;
-        }        
-        else if ((_interruptRequestPin && (!_reg.GetFlag(CpuRegisters::DisableInterrupt))))
-        {
-            _state = State::Interrupt;
-            _interruptRequestPin = false;
-        }
-        else if (_nonMaskableInterruptRequestPin)
-        {
-            _state = State::Interrupt;
-            _nonMaskableInterruptRequestPin = false;
-        }
-        else
-        {
-            _state = State::Instruction;
-        }
 
-        ClockEvent();
+        //ClockEvent();
     }
 
     void Cpu::ServiceReset()
     {
-        _tasksReset.ClockEvent();
+        //_tasksReset.ClockEvent();
     }
 
     void Cpu::ServiceInterrupt()
     {
-        _tasksInterrupt.ClockEvent();
+        //_tasksInterrupt.ClockEvent();
     }
 
     void Cpu::ServiceInstruction()
     {
-        _tasksInstructionDecoding.ClockEvent();
+        //_tasksInstructionDecoding.ClockEvent();
     }
 
-    void Cpu::ClockEvent()
+    void Cpu::Clock()
+    {
+        auto opcode = GetOpcode(_ram.Read(ProgramCounter));
+        ProgramCounter++;
+
+        SetFlag(Unused, true);
+
+
+
+    }
+
+    void Cpu::MaybeClock()
+    {
+        if (CyclesLeft == 0)
+        {
+            Clock();
+        }
+
+        CyclesLeft--;
+    }
+
+    void Cpu::Fire()
     {        
-        if (!_reg.Enable)
+        if (Enable)
         {
-            return;
-        }
-
-        Log::Debug() << "Clock: " << _reg.CyclesLeft.Get() << Log::EndLine;
-        switch (_state)
-        {
-            case State::Unknown:             ServiceUnknown(); break;
-            case State::Reset:               ServiceReset(); break;
-            case State::Interrupt:           ServiceInterrupt(); break;
-            case State::Instruction:         ServiceInstruction(); break;
-        }
-
-        _reg.CyclesLeft.Decr();
-
-        if (_reg.CyclesLeft == 0)
-        {
-            _state = State::Unknown;
+            MaybeClock();
         }
     }
 }

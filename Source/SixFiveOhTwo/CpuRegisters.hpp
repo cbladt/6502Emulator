@@ -3,55 +3,6 @@
 
 namespace SixFiveOhTwo
 {
-    template <typename T>
-    class Register
-    {
-    public:
-        Register() :
-            _value(0)
-        {}
-        ~Register() = default;
-
-        Register(const Register&) = delete;
-        Register& operator=(const Register&) = delete;
-
-        Register(Register&&) = delete;
-        Register& operator=(Register&&) = delete;
-
-        T Get() const
-        {
-            return _value;
-        }
-
-        void Set(T value)
-        {
-            _value = value;
-        }
-
-        void Incr(T value = 1)
-        {
-            _value += value;
-        }
-
-        void Decr(T value = 1)
-        {
-            _value -= value;
-        }
-
-        operator const T()
-        {
-            return _value;
-        }
-
-        void operator=(T value)
-        {
-            _value = value;
-        }
-
-    private:
-        T _value;
-    };
-
     class CpuRegisters
     {
     public:
@@ -80,7 +31,7 @@ namespace SixFiveOhTwo
 
         inline auto GetFlag(Flags flag) const
         {
-            return Status.Get() & flag;
+            return Status & flag;
         }
 
         inline void SetFlag(Flags flag, bool value)
@@ -95,13 +46,13 @@ namespace SixFiveOhTwo
             }
         }        
 
-        Register<uint8_t> A;
-        Register<uint8_t> X;
-        Register<uint8_t> Y;
-        Register<uint8_t> Status;
-        Register<uint8_t> StackPointer;
-        Register<uint16_t> ProgramCounter;
-        Register<uint8_t> CyclesLeft;
+        uint8_t A;
+        uint8_t X;
+        uint8_t Y;
+        uint8_t Status;
+        uint8_t StackPointer;
+        uint16_t ProgramCounter;
+        uint8_t CyclesLeft;
         bool Enable;
     };
 }

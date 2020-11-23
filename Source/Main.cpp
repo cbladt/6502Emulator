@@ -1,19 +1,12 @@
-#include "Bus.hpp"
-#include "GenericMemory.hpp"
 #include <Cpu.hpp>
-#include <Event.hpp>
 #include <Generator.hpp>
 
-using Ram_t = GenericMemory<0x2000, 0x0000, 0x1FFF>;
-
 int main()
-{
-    Bus bus;
-    Ram_t ram(bus);
-    SixFiveOhTwo::Cpu cpu(bus);
-    Clock::Event<Ram_t, SixFiveOhTwo::Cpu> clock(ram, cpu);
+{    
+    SixFiveOhTwo::Cpu cpu;
+    cpu.Wait();
 
-    bus.SetAddress(0x1FCC);
+    /*bus.SetAddress(0x1FCC);
     bus.SetData(0x39);
     bus.SetOperation(Bus::Operation::Write);
     clock.Fire();
@@ -26,5 +19,5 @@ int main()
     bus.SetOperation(Bus::Operation::Read);
     cpu.Enable();
 
-    Clock::Generator::Run(clock, std::chrono::milliseconds(100));
+    Clock::Generator::Run(clock, std::chrono::milliseconds(100));*/
 }

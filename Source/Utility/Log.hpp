@@ -22,7 +22,7 @@ namespace Log
             Logger& operator=(Logger&&) = delete;
 
             template <typename T>
-            Logger<Enabled>& operator <<(T message)
+            constexpr Logger<Enabled>& operator <<(T message)
             {
                 if constexpr(Enabled)
                 {

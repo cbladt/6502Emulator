@@ -2,62 +2,44 @@
 #include <cstdint>
 #include <tuple>
 
+#include <Generator.hpp>
+
 #include <Log.hpp>
-#include <Bus.hpp>
 
+#include <Ram.hpp>
 #include <CpuRegisters.hpp>
-
-#include <Tasks/Reset.hpp>
-#include <Tasks/Interrupt.hpp>
-#include <Tasks/InstructionDecoding.hpp>
+#include <CpuOpcodes.hpp>
 
 namespace SixFiveOhTwo
 {    
-    class Cpu
+    class Cpu :
+            public Clock::Generator<SixFiveOhTwo::Cpu, 10>,
+            private CpuRegisters,
+            private CpuOpcodes
     {
     public:               
-        Cpu(Bus& bus);
+        Cpu();
         ~Cpu() = default;
 
         Cpu(const Cpu&) = delete;
         Cpu& operator=(const Cpu&) = delete;
 
         Cpu(Cpu&&) = delete;
-        Cpu& operator=(Cpu&&) = delete;
+        Cpu& operator=(Cpu&&) = delete;        
 
-        void ClockEvent();
+        void Fire();
 
-        constexpr void Enable()
-        {
-            _reg.Enable = true;
-        }
+        void DoReset();
+        bool MaybeInterrupt();
+        void DoInterrupt();
+        void DoEnable();
+        void DoDisable();
 
-        constexpr void Disable()
-        {
-            _reg.Enable = false;
-        }
+    private:
+        Ram _ram;
 
-    private:        
-        Bus& _bus;
-
-        bool _resetPin;
-        bool _interruptRequestPin;
-        bool _nonMaskableInterruptRequestPin;
-
-        enum class State
-        {
-            Unknown,
-            Reset,
-            Interrupt,            
-            Instruction,
-        };
-        State _state;
-
-        CpuRegisters _reg;
-
-        Tasks::Reset _tasksReset;
-        Tasks::Interrupt _tasksInterrupt;
-        Tasks::InstructionDecoding _tasksInstructionDecoding;
+        void MaybeClock();
+        void Clock();
 
         void ServiceUnknown();
 

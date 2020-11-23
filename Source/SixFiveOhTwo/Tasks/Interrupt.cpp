@@ -3,9 +3,9 @@
 
 namespace SixFiveOhTwo::Tasks
 {
-    Interrupt::Interrupt(CpuRegisters& cpuRegisters, Bus& bus) :
+    Interrupt::Interrupt(CpuRegisters& cpuRegisters, Ram& _ram) :
         _cpu(cpuRegisters),
-        _bus(bus)
+        _ram(ram)
     {}
 
     void Interrupt::PushToStackAsync(uint8_t value)
@@ -13,7 +13,7 @@ namespace SixFiveOhTwo::Tasks
         _bus.SetAddress(0x0100 + _cpu.StackPointer);
         _bus.SetData(value);
         _bus.SetOperation(Bus::Operation::Write);
-        _cpu.StackPointer.Decr();
+        _cpu.StackPointer.Decr();*/
     }
 
     template <typename Bus>

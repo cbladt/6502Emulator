@@ -2,7 +2,7 @@
 
 #include <CpuRegisters.hpp>
 #include <Bus.hpp>
-#include <Opcode.hpp>
+#include <OpcodeIdentifier.hpp>
 
 namespace SixFiveOhTwo::Tasks
 {
