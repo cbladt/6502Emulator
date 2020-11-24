@@ -2,22 +2,17 @@ set(SixFiveOhTwoLib SixFiveOhTwoLib)
 
 set(SixFiveOhTwoSource
     "Cpu.cpp"    
-    "Opcodes/NoOperation.hpp"
-    #"Tasks/Reset.cpp"
-    #"Tasks/Interrupt.cpp"
-    #"Tasks/InstructionDecoding.cpp"
+    "AddressingModes.cpp"
+    "Opcodes/NoOperation.cpp"
 )
 
 set(SixFiveOhTwoHeader
     "Cpu.hpp"
-    "CpuRegisters.hpp"
-    "CpuOpcodes.hpp"
-    "OpcodeIdentifier.hpp"
+    "CpuState.hpp"
     "Ram.hpp"
-    "Opcodes/NoOperation.cpp"
-    #"Tasks/Reset.hpp"
-    #"Tasks/Interrupt.hpp"
-    #"Tasks/InstructionDecoding.hpp"
+    "AddressingModes.hpp"
+    "Opcodes/Opcodes.hpp"
+    "Opcodes/NoOperation.hpp"
 )
 
 add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader})

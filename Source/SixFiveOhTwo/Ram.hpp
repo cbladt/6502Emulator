@@ -23,9 +23,24 @@ public:
         return _data.at(address);
     }
 
+    constexpr uint8_t ReadIncrement(uint16_t& address)
+    {
+        auto data = _data.at(address);
+        address++;
+        return data;
+    }
+
     constexpr void Write(uint16_t address, uint8_t data)
     {
         _data.at(address) = data;
+    }
+
+    static const constexpr auto StackPointerStart = 0x100;
+
+    constexpr void PushToStack(uint8_t value, uint8_t& stackPointer)
+    {
+        Write(StackPointerStart + stackPointer, value);
+        stackPointer--;
     }
 
 private:

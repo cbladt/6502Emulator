@@ -1,5 +1,5 @@
 #include "Cpu.hpp"
-#include <OpcodeIdentifier.hpp>
+#include <Opcodes/Opcodes.hpp>
 
 namespace SixFiveOhTwo
 {       
@@ -15,20 +15,17 @@ namespace SixFiveOhTwo
 
         ProgramCounter = (high << 8) | low;
 
-        A = 0;
-        X = 0;
-        Y = 0;
+        RegisterReset();
 
-        StackPointer = StackPointerDefault;
-        Status = 0;
-        SetFlag(Unused, true);
+        StackPointer = StackPointerDefault;        
+        SetStatusFlag(Unused, true);
 
         CyclesLeft = 8;
     }
 
     bool Cpu::InterruptRequest()
     {
-        if (!GetFlag(DisableInterrupt))
+        if (!GetStatusFlag(DisableInterrupt))
         {
             DoInterrupt(ProgramCounterInterrupt);
             return true;
@@ -46,14 +43,14 @@ namespace SixFiveOhTwo
 
     void Cpu::DoInterrupt(uint16_t address)
     {
-        PushToStack((ProgramCounter >> 8) & 0x00FF);
-        PushToStack(ProgramCounter & 0x00FF);
+        _ram.PushToStack((ProgramCounter >> 8) & 0x00FF, StackPointer);
+        _ram.PushToStack(ProgramCounter & 0x00FF, StackPointer);
 
-        SetFlag(Break, false);
-        SetFlag(Unused, true);
-        SetFlag(DisableInterrupt, true);
+        SetStatusFlag(Break, false);
+        SetStatusFlag(Unused, true);
+        SetStatusFlag(DisableInterrupt, true);
 
-        PushToStack(Status);
+        _ram.PushToStack(Status, StackPointer);
 
         auto pcLow = _ram.Read(address);
         auto pcHigh = _ram.Read(address + 1);
@@ -67,9 +64,9 @@ namespace SixFiveOhTwo
         Opcode = _ram.Read(ProgramCounter);
         ProgramCounter++;
 
-        SetFlag(Unused, true);
+        SetStatusFlag(Unused, true);
 
-        HandleOpcode();
+        Opcodes::Execute(*this);
     }
 
     void Cpu::MaybeClock()

@@ -1,6 +1,8 @@
 #include "NoOperation.hpp"
 
-namespace SixFiveOhTwo::Opcodes
+#include <AddressingModes.hpp>
+
+namespace SixFiveOhTwo::Opcodes::NoOperation
 {
     uint8_t OpcodeExtraCycle(uint8_t opcode)
     {
@@ -24,15 +26,13 @@ namespace SixFiveOhTwo::Opcodes
         return 1;
     }
 
-    void NoOperation::Execute(CpuRegisters& cpu)
+    void Execute(CpuState& cpu)
     {
-        auto a = AddressingExtraCycle();
+        auto addressing = AdressingModes::Implied(cpu);
         auto b = OpcodeExtraCycle(cpu.Opcode);
-        auto c = (a & b);
+        auto c = (addressing & b) ? 1 : 0;
 
-        cpu.CyclesLeft += c;
-
-        auto n = a;
+        cpu.CyclesLeft += c;        
     }
 }
 

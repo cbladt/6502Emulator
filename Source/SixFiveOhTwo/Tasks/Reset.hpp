@@ -1,5 +1,5 @@
 #pragma once
-#include <CpuRegisters.hpp>
+#include <CpuState.hpp>
 
 namespace SixFiveOhTwo::Tasks
 {    

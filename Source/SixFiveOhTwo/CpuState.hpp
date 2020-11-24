@@ -3,7 +3,7 @@
 
 namespace SixFiveOhTwo
 {
-    class CpuRegisters
+    class CpuState
     {
     public:
         enum Flags
@@ -18,7 +18,7 @@ namespace SixFiveOhTwo
             Negative = (1 << 7)
         };
 
-        CpuRegisters() :
+        CpuState() :
             A(0),
             X(0),
             Y(0),
@@ -27,22 +27,26 @@ namespace SixFiveOhTwo
             ProgramCounter(0),
             CyclesLeft(0),
             Opcode(0),
+            AluTemp(0),
+            AddressAbsolute(0),
             Enable(false)
-        {}
-        ~CpuRegisters() = default;
+        {
+            RegisterReset();
+        }
+        ~CpuState() = default;
 
-        CpuRegisters(const CpuRegisters&) = delete;
-        CpuRegisters& operator=(const CpuRegisters&) = delete;
+        CpuState(const CpuState&) = delete;
+        CpuState& operator=(const CpuState&) = delete;
 
-        CpuRegisters(CpuRegisters&&) = delete;
-        CpuRegisters& operator=(CpuRegisters&&) = delete;
+        CpuState(CpuState&&) = delete;
+        CpuState& operator=(CpuState&&) = delete;
 
-        inline auto GetFlag(Flags flag) const
+        constexpr auto GetStatusFlag(Flags flag) const
         {
             return Status & flag;
         }
 
-        inline void SetFlag(Flags flag, bool value)
+        constexpr void SetStatusFlag(Flags flag, bool value)
         {
             if (value)
             {
@@ -52,7 +56,22 @@ namespace SixFiveOhTwo
             {
                 Status = Status & ~flag;
             }
-        }        
+        }
+
+        constexpr void RegisterReset()
+        {
+            A = 0;
+            X = 0;
+            Y = 0;
+            Status = 0;
+            StackPointer = 0;
+            ProgramCounter = 0;
+            CyclesLeft = 0;
+            Opcode = 0;
+            AluTemp = 0;
+            AddressAbsolute = 0;
+            Enable = false;
+        }
 
         uint8_t A;
         uint8_t X;
@@ -62,6 +81,8 @@ namespace SixFiveOhTwo
         uint16_t ProgramCounter;
         uint8_t CyclesLeft;
         uint8_t Opcode;
+        uint8_t AluTemp;
+        uint16_t AddressAbsolute;
         bool Enable;
     };
 }

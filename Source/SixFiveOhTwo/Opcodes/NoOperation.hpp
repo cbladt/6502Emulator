@@ -1,21 +1,8 @@
 #pragma once
-#include <CpuRegisters.hpp>
+#include <CpuState.hpp>
 
-namespace SixFiveOhTwo::Opcodes
+namespace SixFiveOhTwo::Opcodes::NoOperation
 {
-    class NoOperation
-    {
-    public:
-        NoOperation() = default;
-        ~NoOperation() = default;
-
-        NoOperation(const NoOperation&) = delete;
-        NoOperation& operator=(const NoOperation&) = delete;
-
-        NoOperation(NoOperation&&) = delete;
-        NoOperation& operator=(NoOperation&&) = delete;
-
-        void Execute(CpuRegisters& cpu);
-    };
+    void Execute(CpuState& cpu);
 }
 
