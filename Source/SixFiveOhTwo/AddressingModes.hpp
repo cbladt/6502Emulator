@@ -1,48 +1,165 @@
 #pragma once
 
-#include <Ram.hpp>
-#include <CpuState.hpp>
-
 namespace SixFiveOhTwo::AdressingModes
 {
-    bool Implied(CpuState& cpu);
+    using Offset = unsigned char;
 
-    bool Immediate(CpuState& cpu);
-
-    bool ZeroPage(CpuState& cpu, Ram& ram, uint8_t offset = 0);
-
-    template <typename T1, typename T2>
-    bool ZeroPageXOffset(T1& cpu, T2& ram)
+    template <typename Cpu>
+    bool Implied(Cpu& cpu)
     {
-        return ZeroPage(cpu, ram, cpu.X);
+        cpu.AluTemp = cpu.A;
+
+        return false;
     }
 
-    template <typename T1, typename T2>
-    bool ZeroPageYOffset(T1& cpu, T2& ram)
+    template <typename Cpu>
+    bool Immediate(Cpu& cpu)
     {
-        return ZeroPage(cpu, ram, cpu.Y);
+        cpu.ProgramCounter++;
+
+        cpu.AddressAbsolute = cpu.ProgramCounter;
+
+        return false;
     }
 
-    bool Relative(CpuState& cpu, Ram& ram);
-
-    bool Absolute(CpuState& cpu, Ram& ram, uint8_t offset = 0);
-
-    template <typename T1, typename T2>
-    bool AbsoluteXOffset(T1& cpu, T2& ram)
+    template <typename Cpu, typename Ram>
+    bool Relative(Cpu& cpu, Ram& ram)
     {
-        return Absolute(cpu, ram, cpu.X);
+        cpu.AddressAbsolute = ram.ReadIncrement(cpu.ProgramCounter);
+
+        if (cpu.AddressAbsolute & 0x80)
+        {
+            cpu.AddressAbsolute |= 0xFF00;
+        }
+
+        return false;
     }
 
-    template <typename T1, typename T2>
-    bool AbsoluteYOffset(T1& cpu, T2& ram)
+    namespace ZeroPage
     {
-        return Absolute(cpu, ram, cpu.Y);
+        template <typename Cpu, typename Ram>
+        bool NoOffset(Cpu& cpu, Ram& ram, Offset offset = 0)
+        {
+            cpu.AddressAbsolute = ram.ReadIncrement(cpu.ProgramCounter) + offset;
+
+            cpu.AddressAbsolute &= 0x00F;
+
+            return false;
+        }
+
+        template <typename Cpu, typename Ram>
+        bool XOffset(Cpu& cpu, Ram& ram)
+        {
+            return NoOffset(cpu, ram, cpu.X);
+        }
+
+        template <typename Cpu, typename Ram>
+        bool YOffset(Cpu& cpu, Ram& ram)
+        {
+            return NoOffset(cpu, ram, cpu.Y);
+        }
     }
 
-    bool Indirect(CpuState& cpu, Ram& ram);
+    namespace Absolute
+    {
+        template <typename Cpu, typename Ram>
+        bool NoOffset(Cpu& cpu, Ram& ram, Offset offset = 0)
+        {
+            auto low = ram.ReadIncrement(cpu.ProgramCounter);
 
-    bool IndirectXOffset(CpuState& cpu, Ram& ram);
+            auto high = ram.ReadIncrement(cpu.ProgramCounter);
 
-    bool IndirectYOffset(CpuState& cpu, Ram& ram);
+            cpu.AddressAbsolute = (high << 8) | low;
+            cpu.AddressAbsolute += offset;
+
+            if ((cpu.AddressAbsolute  & 0xFF00) != (high << 8))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        template <typename Cpu, typename Ram>
+        bool XOffset(Cpu& cpu, Ram& ram)
+        {
+            return NoOffset(cpu, ram, cpu.X);
+        }
+
+        template <typename Cpu, typename Ram>
+        bool YOffset(Cpu& cpu, Ram& ram)
+        {
+            return NoOffset(cpu, ram, cpu.Y);
+        }
+    }
+
+    namespace Indirect
+    {
+        template <typename Cpu, typename Ram>
+        bool NoOffset(Cpu& cpu, Ram& ram)
+        {
+            auto low = ram.ReadIncrement(cpu.ProgramCounter);
+
+            auto high = ram.ReadIncrement(cpu.ProgramCounter);
+
+            auto pointer = (high << 8) | low;
+
+            if (pointer == 0x00FF)
+            {
+                auto low = ram.Read(pointer);
+                auto high = ram.Read(pointer & 0xFF00);
+
+                cpu.AddressAbsolute = (high << 8) | low;
+            }
+            else
+            {
+                auto low = ram.Read(pointer);
+                auto high = ram.Read(pointer + 1);
+
+                cpu.AddressAbsolute = (high << 8) | low;
+            }
+
+            return false;
+        }
+
+        template <typename Cpu, typename Ram>
+        bool XOffset(Cpu& cpu, Ram& ram)
+        {
+            auto address = ram.ReadIncrement(cpu.ProgramCounter);
+
+            auto lowAddress = address + cpu.X & 0x00FF;
+            auto HighAddress = address + cpu.X + 1 & 0x00FF;
+
+            auto low = ram.Read(lowAddress);
+            auto high = ram.Read(HighAddress);
+
+            cpu.AddressAbsolute = (high << 8) | low;
+
+            return false;
+        }
+
+        template <typename Cpu, typename Ram>
+        bool YOffset(Cpu& cpu, Ram& ram)
+        {
+            auto address = ram.ReadIncrement(cpu.ProgramCounter);
+
+            auto low = ram.Read(address & 0x00FF);
+            auto high = ram.Read((address + 1) & 0x00FF);
+
+            cpu.AddressAbsolute = (high << 8) | low;
+            cpu.AddressAbsolute += cpu.Y;
+
+            if ((cpu.AddressAbsolute & 0xFF00) != (high << 8))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 }
 

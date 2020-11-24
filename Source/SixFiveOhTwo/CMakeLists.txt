@@ -1,8 +1,7 @@
 set(SixFiveOhTwoLib SixFiveOhTwoLib)
 
 set(SixFiveOhTwoSource
-    "Cpu.cpp"    
-    "AddressingModes.cpp"
+    "Cpu.cpp"        
 )
 
 set(SixFiveOhTwoHeader
