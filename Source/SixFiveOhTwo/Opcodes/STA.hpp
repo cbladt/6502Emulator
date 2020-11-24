@@ -1,6 +1,6 @@
 #pragma once
 
-namespace SixFiveOhTwo::Opcodes::ADC
+namespace SixFiveOhTwo::Opcodes::STA
 {
 	template <typename Cpu, typename Ram, typename Cycles>
 	void IndirectOffsetX(Cpu& cpu, Ram& ram, Cycles cycles)
@@ -11,13 +11,6 @@ namespace SixFiveOhTwo::Opcodes::ADC
 
 	template <typename Cpu, typename Ram, typename Cycles>
 	void Zero(Cpu& cpu, Ram& ram, Cycles cycles)
-	{
-
-
-	}
-
-	template <typename Cpu, typename Ram, typename Cycles>
-	void Implied(Cpu& cpu, Ram& ram, Cycles cycles)
 	{
 
 

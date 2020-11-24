@@ -1,6 +1,6 @@
 #pragma once
 
-namespace SixFiveOhTwo::Opcodes::ADC
+namespace SixFiveOhTwo::Opcodes::EOR
 {
 	template <typename Cpu, typename Ram, typename Cycles>
 	void IndirectOffsetX(Cpu& cpu, Ram& ram, Cycles cycles)
