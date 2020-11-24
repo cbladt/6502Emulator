@@ -1,8 +1,11 @@
 #pragma once
-#include <CpuState.hpp>
 
 namespace SixFiveOhTwo::Opcodes::NoOperation
 {
-    void Execute(CpuState& cpu);
+    template <typename Cpu_t>
+    void Execute(Cpu_t& cpu)
+    {
+        cpu.CyclesLeft += 2;
+    }
 }
 

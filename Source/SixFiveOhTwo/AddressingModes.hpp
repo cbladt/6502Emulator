@@ -42,5 +42,7 @@ namespace SixFiveOhTwo::AdressingModes
     bool Indirect(CpuState& cpu, Ram& ram);
 
     bool IndirectXOffset(CpuState& cpu, Ram& ram);
+
+    bool IndirectYOffset(CpuState& cpu, Ram& ram);
 }
 

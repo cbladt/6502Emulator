@@ -2,8 +2,6 @@
 
 #include <Log>
 
-#include <CpuState.hpp>
-
 #include <Opcodes/NoOperation.hpp>
 
 namespace SixFiveOhTwo::Opcodes
@@ -13,7 +11,8 @@ namespace SixFiveOhTwo::Opcodes
         Nop
     };
 
-    constexpr void Execute(CpuState& cpu)
+    template <typename Cpu_t, typename Ram_t>
+    constexpr void Execute(Cpu_t& cpu, Ram_t&)
     {
         switch(static_cast<Id>(cpu.Opcode))
         {

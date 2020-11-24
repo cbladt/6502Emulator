@@ -10,6 +10,8 @@ namespace SixFiveOhTwo
 
     void Cpu::Reset()
     {
+        Log::Debug() << "Reset!" << Log::EndLine;
+
         auto low = _ram.Read(ProgramCounterDefault);
         auto high = _ram.Read(ProgramCounterDefault + 1);
 
@@ -20,7 +22,7 @@ namespace SixFiveOhTwo
         StackPointer = StackPointerDefault;        
         SetStatusFlag(Unused, true);
 
-        CyclesLeft = 8;
+        CyclesLeft = 8;        
     }
 
     bool Cpu::InterruptRequest()
@@ -61,12 +63,11 @@ namespace SixFiveOhTwo
 
     void Cpu::Clock()
     {
-        Opcode = _ram.Read(ProgramCounter);
-        ProgramCounter++;
+        Opcode = _ram.ReadIncrement(ProgramCounter);
 
         SetStatusFlag(Unused, true);
 
-        Opcodes::Execute(*this);
+        Opcodes::Execute(*this, _ram);
     }
 
     void Cpu::MaybeClock()

@@ -3,7 +3,6 @@ set(SixFiveOhTwoLib SixFiveOhTwoLib)
 set(SixFiveOhTwoSource
     "Cpu.cpp"    
     "AddressingModes.cpp"
-    "Opcodes/NoOperation.cpp"
 )
 
 set(SixFiveOhTwoHeader

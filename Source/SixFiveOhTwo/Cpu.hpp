@@ -13,7 +13,7 @@ namespace SixFiveOhTwo
 {    
     class Cpu :
             public Clock::Generator<SixFiveOhTwo::Cpu, 10>,
-            private CpuState
+            public CpuState
     {
     public:               
         Cpu();
