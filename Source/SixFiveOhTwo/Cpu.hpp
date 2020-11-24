@@ -2,8 +2,7 @@
 #include <cstdint>
 #include <tuple>
 
-#include <Generator.hpp>
-
+#include <Clock.hpp>
 #include <Log.hpp>
 
 #include <Ram.hpp>
@@ -12,7 +11,7 @@
 namespace SixFiveOhTwo
 {    
     class Cpu :
-            public Clock::Generator<SixFiveOhTwo::Cpu, 10>,
+            public Clock<SixFiveOhTwo::Cpu, 10>,
             public CpuState
     {
     public:               

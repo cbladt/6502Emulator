@@ -1,5 +1,4 @@
 #include <Cpu.hpp>
-#include <Generator.hpp>
 
 int main()
 {    

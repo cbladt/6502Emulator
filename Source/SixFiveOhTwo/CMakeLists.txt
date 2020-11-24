@@ -17,4 +17,4 @@ add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader
 
 target_include_directories(${SixFiveOhTwoLib} PUBLIC .)
 
-target_link_libraries(${SixFiveOhTwoLib} UtilityLib ClockLib)
+target_link_libraries(${SixFiveOhTwoLib} UtilityLib)
