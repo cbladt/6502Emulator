@@ -17,6 +17,7 @@ public:
     Clock(Clock&&) = default;
     Clock& operator=(Clock&&) = default;
 
+    // TODO Use timer
     void Run()
     {
         while (true)

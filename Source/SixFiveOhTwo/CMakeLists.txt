@@ -9,8 +9,7 @@ set(SixFiveOhTwoHeader
     "CpuState.hpp"
     "Ram.hpp"
     "AddressingModes.hpp"
-    "Opcodes/Opcodes.hpp"
-    "Opcodes/NoOperation.hpp"
+    "Opcodes/Opcodes.hpp"    
 )
 
 add_library(${SixFiveOhTwoLib} STATIC ${SixFiveOhTwoSource} ${SixFiveOhTwoHeader})

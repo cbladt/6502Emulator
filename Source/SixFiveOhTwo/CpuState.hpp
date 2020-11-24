@@ -23,8 +23,7 @@ namespace SixFiveOhTwo
             ProgramCounter(0),
             CyclesLeft(0),
             Opcode(0),
-            AluTemp(0),
-            AddressAbsolute(0),
+            ALUTemp(0),
             Enable(false)
         {
             RegisterReset();
@@ -55,8 +54,7 @@ namespace SixFiveOhTwo
             ProgramCounter = 0;
             CyclesLeft = 0;
             Opcode = 0;
-            AluTemp = 0;
-            AddressAbsolute = 0;
+            ALUTemp = 0;
             Enable = false;
         }
 
@@ -76,8 +74,7 @@ namespace SixFiveOhTwo
         uint16_t ProgramCounter;
         uint8_t CyclesLeft;
         uint8_t Opcode;
-        uint8_t AluTemp;
-        uint16_t AddressAbsolute;
+        uint8_t ALUTemp;
         bool Enable;
     };
 }

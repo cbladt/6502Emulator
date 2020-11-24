@@ -9,7 +9,7 @@ namespace SixFiveOhTwo::AdressingModes
     template <typename Cpu>
     bool Implied(Cpu& cpu)
     {
-        cpu.AluTemp = cpu.A;
+        cpu.ALUTemp = cpu.A;
 
         return false;
     }
@@ -19,7 +19,7 @@ namespace SixFiveOhTwo::AdressingModes
     {
         cpu.ProgramCounter++;
 
-        cpu.AddressAbsolute = cpu.ProgramCounter;
+        cpu.ALUTemp = cpu.ProgramCounter;
 
         return false;
     }
@@ -27,11 +27,11 @@ namespace SixFiveOhTwo::AdressingModes
     template <typename Cpu, typename Ram>
     bool Relative(Cpu& cpu, Ram& ram)
     {
-        cpu.AddressAbsolute = ram.ReadIncrement(cpu.ProgramCounter);
+        cpu.ALUTemp = ram.ReadIncrement(cpu.ProgramCounter);
 
-        if (cpu.AddressAbsolute & 0x80)
+        if (cpu.ALUTemp & 0x80)
         {
-            cpu.AddressAbsolute |= 0xFF00;
+            cpu.ALUTemp |= 0xFF00;
         }
 
         return false;
@@ -42,9 +42,9 @@ namespace SixFiveOhTwo::AdressingModes
         template <typename Cpu, typename Ram>
         bool NoOffset(Cpu& cpu, Ram& ram, Offset offset = 0)
         {
-            cpu.AddressAbsolute = ram.ReadIncrement(cpu.ProgramCounter) + offset;
+            cpu.ALUTemp = ram.ReadIncrement(cpu.ProgramCounter) + offset;
 
-            cpu.AddressAbsolute &= 0x00F;
+            cpu.ALUTemp &= 0x00F;
 
             return false;
         }
@@ -71,10 +71,10 @@ namespace SixFiveOhTwo::AdressingModes
 
             auto high = ram.ReadIncrement(cpu.ProgramCounter);
 
-            cpu.AddressAbsolute = (high << 8) | low;
-            cpu.AddressAbsolute += offset;
+            cpu.ALUTemp = (high << 8) | low;
+            cpu.ALUTemp += offset;
 
-            if ((cpu.AddressAbsolute  & 0xFF00) != (high << 8))
+            if ((cpu.ALUTemp  & 0xFF00) != (high << 8))
             {
                 return true;
             }
@@ -113,14 +113,14 @@ namespace SixFiveOhTwo::AdressingModes
                 auto low = ram.Read(pointer);
                 auto high = ram.Read(pointer & 0xFF00);
 
-                cpu.AddressAbsolute = (high << 8) | low;
+                cpu.ALUTemp = (high << 8) | low;
             }
             else
             {
                 auto low = ram.Read(pointer);
                 auto high = ram.Read(pointer + 1);
 
-                cpu.AddressAbsolute = (high << 8) | low;
+                cpu.ALUTemp = (high << 8) | low;
             }
 
             return false;
@@ -137,7 +137,7 @@ namespace SixFiveOhTwo::AdressingModes
             auto low = ram.Read(lowAddress);
             auto high = ram.Read(HighAddress);
 
-            cpu.AddressAbsolute = (high << 8) | low;
+            cpu.ALUTemp = (high << 8) | low;
 
             return false;
         }
@@ -150,10 +150,10 @@ namespace SixFiveOhTwo::AdressingModes
             auto low = ram.Read(address & 0x00FF);
             auto high = ram.Read((address + 1) & 0x00FF);
 
-            cpu.AddressAbsolute = (high << 8) | low;
-            cpu.AddressAbsolute += cpu.Y;
+            cpu.ALUTemp = (high << 8) | low;
+            cpu.ALUTemp += cpu.Y;
 
-            if ((cpu.AddressAbsolute & 0xFF00) != (high << 8))
+            if ((cpu.ALUTemp & 0xFF00) != (high << 8))
             {
                 return true;
             }
