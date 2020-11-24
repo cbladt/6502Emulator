@@ -1,14 +1,13 @@
 #pragma once
 
 #include <Log>
-
 #include <Opcodes/NoOperation.hpp>
 
 namespace SixFiveOhTwo::Opcodes
 {
     enum Id
     {
-        Nop
+        Nop = 0
     };
 
     template <typename Cpu_t, typename Ram_t>
