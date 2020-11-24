@@ -11,8 +11,7 @@
 namespace SixFiveOhTwo
 {    
     class Cpu :
-            public Clock<SixFiveOhTwo::Cpu, 10>,
-            public CpuState
+            public Clock<SixFiveOhTwo::Cpu, 10>
     {
     public:               
         Cpu();
@@ -32,12 +31,12 @@ namespace SixFiveOhTwo
 
         constexpr void SetEnable()
         {
-            Enable = true;
+            _s.Enable = true;
         }
 
         constexpr void SetDisable()
         {
-            Enable = false;
+            _s.Enable = false;
         }
 
     private:
@@ -46,6 +45,7 @@ namespace SixFiveOhTwo
         static const constexpr auto ProgramCounterNonMaskInterrupt = 0xFFFA;
         static const constexpr auto StackPointerDefault = 0xFD;
 
+        CpuState _s;
         Ram _ram;
 
         void MaybeClock();

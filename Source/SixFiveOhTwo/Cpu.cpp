@@ -15,19 +15,19 @@ namespace SixFiveOhTwo
         auto low = _ram.Read(ProgramCounterDefault);
         auto high = _ram.Read(ProgramCounterDefault + 1);
 
-        ProgramCounter = (high << 8) | low;
+        _s.ProgramCounter = (high << 8) | low;
 
-        RegisterReset();
+        _s.RegisterReset();
 
-        StackPointer = StackPointerDefault;        
-        SetStatusFlag(Unused, true);
+        _s.ProgramCounter = ProgramCounterDefault;
+        _s.Unused = true;
 
-        CyclesLeft = 8;        
+        _s.CyclesLeft = 8;
     }
 
     bool Cpu::InterruptRequest()
     {
-        if (!GetStatusFlag(DisableInterrupt))
+        if (!_s.DisableInterrupt)
         {
             DoInterrupt(ProgramCounterInterrupt);
             return true;
@@ -45,44 +45,44 @@ namespace SixFiveOhTwo
 
     void Cpu::DoInterrupt(uint16_t address)
     {
-        _ram.PushToStack((ProgramCounter >> 8) & 0x00FF, StackPointer);
-        _ram.PushToStack(ProgramCounter & 0x00FF, StackPointer);
+        _ram.PushToStack((_s.ProgramCounter >> 8) & 0x00FF, _s.StackPointer);
+        _ram.PushToStack(_s.ProgramCounter & 0x00FF, _s.StackPointer);
 
-        SetStatusFlag(Break, false);
-        SetStatusFlag(Unused, true);
-        SetStatusFlag(DisableInterrupt, true);
+        _s.Break = false;
+        _s.Unused = true;
+        _s.DisableInterrupt = true;
 
-        _ram.PushToStack(Status, StackPointer);
+        _ram.PushToStack(_s.Status, _s.StackPointer);
 
         auto pcLow = _ram.Read(address);
         auto pcHigh = _ram.Read(address + 1);
-        ProgramCounter = (pcHigh << 8) | pcLow;
+        _s.ProgramCounter = (pcHigh << 8) | pcLow;
 
-        CyclesLeft = 7;
+        _s.CyclesLeft = 7;
     }
 
     void Cpu::Clock()
     {
-        Opcode = _ram.ReadIncrement(ProgramCounter);
+        _s.Opcode = _ram.ReadIncrement(_s.ProgramCounter);
 
-        SetStatusFlag(Unused, true);
+        _s.Unused = true;
 
-        Opcodes::Execute(*this, _ram);
+        Opcodes::Execute(_s, _ram);
     }
 
     void Cpu::MaybeClock()
     {
-        if (CyclesLeft == 0)
+        if (_s.CyclesLeft == 0)
         {
             Clock();
-        }
+        }                
 
-        CyclesLeft--;
+        _s.CyclesLeft--;
     }
 
     void Cpu::Fire()
     {        
-        if (Enable)
+        if (_s.Enable)
         {
             MaybeClock();
         }

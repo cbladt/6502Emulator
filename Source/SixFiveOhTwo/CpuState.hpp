@@ -6,19 +6,15 @@ namespace SixFiveOhTwo
     class CpuState
     {
     public:
-        enum Flags
-        {
-            CarryBit = (1 << 0),
-            Zero = (1 << 1),
-            DisableInterrupt = (1 << 2),
-            DecimalMode = (1 << 3),
-            Break = (1 << 4),
-            Unused = (1 << 5),
-            Overflow = (1 << 6),
-            Negative = (1 << 7)
-        };
-
         CpuState() :
+            CarryBit(false),
+            Zero(false),
+            DisableInterrupt(false),
+            DecimalMode(false),
+            Break(false),
+            Unused(false),
+            Overflow(false),
+            Negative(false),
             A(0),
             X(0),
             Y(0),
@@ -41,25 +37,16 @@ namespace SixFiveOhTwo
         CpuState(CpuState&&) = delete;
         CpuState& operator=(CpuState&&) = delete;
 
-        constexpr auto GetStatusFlag(Flags flag) const
-        {
-            return Status & flag;
-        }
-
-        constexpr void SetStatusFlag(Flags flag, bool value)
-        {
-            if (value)
-            {
-                Status = Status | flag;
-            }
-            else
-            {
-                Status = Status & ~flag;
-            }
-        }
-
         constexpr void RegisterReset()
         {
+            CarryBit= false;
+            Zero= false;
+            DisableInterrupt= false;
+            DecimalMode= false;
+            Break= false;
+            Unused= false;
+            Overflow= false;
+            Negative= false;
             A = 0;
             X = 0;
             Y = 0;
@@ -73,6 +60,14 @@ namespace SixFiveOhTwo
             Enable = false;
         }
 
+        bool CarryBit;
+        bool Zero;
+        bool DisableInterrupt;
+        bool DecimalMode;
+        bool Break;
+        bool Unused;
+        bool Overflow;
+        bool Negative;
         uint8_t A;
         uint8_t X;
         uint8_t Y;

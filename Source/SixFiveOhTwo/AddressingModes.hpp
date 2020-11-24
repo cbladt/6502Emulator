@@ -1,8 +1,10 @@
 #pragma once
+#include <cstdint>
 
 namespace SixFiveOhTwo::AdressingModes
 {
-    using Offset = unsigned char;
+    using Offset = uint8_t;
+    using Count = uint8_t;
 
     template <typename Cpu>
     bool Implied(Cpu& cpu)
