@@ -9,16 +9,17 @@ namespace SixFiveOhTwo::Opcodes::ADC
         template <typename Cpu, typename Cycles, typename Value>
         void Adc(Cpu& cpu, Cycles cycles, Value value)
         {
-            auto a = static_cast<Value>(cpu.A);
-            auto c = static_cast<Value>(cpu.CarryBit ? 1 : 0);
+            auto a = static_cast<uint16_t>(cpu.A);
+            auto c = static_cast<uint16_t>(cpu.CarryBit ? 1 : 0);
+            auto v = static_cast<uint16_t>(value);
 
-            auto sum = static_cast<Value>(a + c + value);
+            auto sum = static_cast<uint16_t>(a + c + v);
 
             cpu.CarryBit = sum > 255;
 
             cpu.Zero = (sum & 0x00FF) == 0;
 
-            cpu.Overflow = (~(a ^ value) & (a ^ sum)) & 0x0080;
+            cpu.Overflow = (~(a ^ v) & (a ^ sum)) & 0x0080;
 
             cpu.Negative = sum & 0x80;
 
