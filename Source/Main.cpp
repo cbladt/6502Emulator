@@ -1,10 +1,29 @@
 #include <Cpu.hpp>
 
+#include <fstream>
+#include <iterator>
+#include <vector>
+
+template <typename T>
+void LoadRom(std::string path, T& ram)
+{
+    std::ifstream input(path, std::ios::binary );
+    std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
+
+    for (uint16_t index = 0; index < buffer.size(); index++)
+    {
+        ram.Write(index, buffer.at(index));
+    }
+}
+
 int main()
 {    
     SixFiveOhTwo::Cpu cpu;
+
+    LoadRom("", cpu.GetRam());
+
     cpu.SetEnable();
-    cpu.Run();
+    cpu.Run();       
 
 
 

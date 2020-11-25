@@ -1,25 +1,23 @@
 #pragma once
-#include <cstdint>
 
-namespace SixFiveOhTwo::AdressingModes
+namespace SixFiveOhTwo::AddressingModes
 {
-    using Offset = uint8_t;
-    using Count = uint8_t;
+    using Offset = unsigned char;
 
-    template <typename Cpu>
-    bool Implied(Cpu& cpu)
+    template <typename Cpu, typename Ram>
+    bool Implied(Cpu& cpu, Ram&)
     {
-        cpu.ALUTemp = cpu.A;
+        cpu.Temp = cpu.A;
 
         return false;
     }
 
-    template <typename Cpu>
-    bool Immediate(Cpu& cpu)
+    template <typename Cpu, typename Ram>
+    bool Immediate(Cpu& cpu, Ram&)
     {
         cpu.ProgramCounter++;
 
-        cpu.ALUTemp = cpu.ProgramCounter;
+        cpu.Temp = cpu.ProgramCounter;
 
         return false;
     }
@@ -29,9 +27,9 @@ namespace SixFiveOhTwo::AdressingModes
     {
         cpu.ALUTemp = ram.ReadIncrement(cpu.ProgramCounter);
 
-        if (cpu.ALUTemp & 0x80)
+        if (cpu.Temp & 0x80)
         {
-            cpu.ALUTemp |= 0xFF00;
+            cpu.Temp |= 0xFF00;
         }
 
         return false;
@@ -42,9 +40,9 @@ namespace SixFiveOhTwo::AdressingModes
         template <typename Cpu, typename Ram>
         bool NoOffset(Cpu& cpu, Ram& ram, Offset offset = 0)
         {
-            cpu.ALUTemp = ram.ReadIncrement(cpu.ProgramCounter) + offset;
+            cpu.Temp = ram.ReadIncrement(cpu.ProgramCounter) + offset;
 
-            cpu.ALUTemp &= 0x00F;
+            cpu.Temp &= 0x00F;
 
             return false;
         }
@@ -71,10 +69,10 @@ namespace SixFiveOhTwo::AdressingModes
 
             auto high = ram.ReadIncrement(cpu.ProgramCounter);
 
-            cpu.ALUTemp = (high << 8) | low;
-            cpu.ALUTemp += offset;
+            cpu.Temp = (high << 8) | low;
+            cpu.Temp += offset;
 
-            if ((cpu.ALUTemp  & 0xFF00) != (high << 8))
+            if ((cpu.Temp  & 0xFF00) != (high << 8))
             {
                 return true;
             }

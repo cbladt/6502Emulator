@@ -30,7 +30,12 @@ struct Opcode
     Cycles_t Cycles;
     Addressing_t Addressing;
 
-    bool operator==(const Opcode& other)
+    bool ReallyEqual(const Opcode& other)
+    {
+        return other.Name == Name && other.Addressing == Addressing && other.Cycles == Cycles;
+    }
+
+    bool AlmostEqual(const Opcode& other)
     {
         return other.Name == Name && other.Id == Id && other.Addressing == Addressing;
     }
@@ -51,6 +56,25 @@ struct Opcode
             case Addressing_t::Indirect:            return "Indirect";
             case Addressing_t::Indirect_XOffset:    return "IndirectXOffset";
             case Addressing_t::Indirect_YOffset:    return "IndirectYOffset";
+        }
+    }
+
+    std::string GetAddressingFunction()
+    {
+        switch(Addressing)
+        {
+            case Addressing_t::Implied:             return "AddressingModes::Implied(cpu, ram);";
+            case Addressing_t::Immediate:           return "AddressingModes::Immediate(cpu, ram);";
+            case Addressing_t::Relative:            return "AddressingModes::Relative(cpu, ram);";
+            case Addressing_t::ZeroPage:            return "AddressingModes::ZeroPage::NoOffset(cpu, ram);";
+            case Addressing_t::ZeroPage_XOffset:    return "AddressingModes::ZeroPage::XOffset(cpu, ram);";
+            case Addressing_t::ZeroPage_YOffset:    return "AddressingModes::ZeroPage::YOffset(cpu, ram);";
+            case Addressing_t::Absolute:            return "AddressingModes::Absolute::NoOffset(cpu, ram);";
+            case Addressing_t::Absolute_XOffset:    return "AddressingModes::Absolute::XOffset(cpu, ram);";
+            case Addressing_t::Absolute_YOffset:    return "AddressingModes::Absolute::YOffset(cpu, ram);";
+            case Addressing_t::Indirect:            return "AddressingModes::Indirect::XOffset(cpu, ram);";
+            case Addressing_t::Indirect_XOffset:    return "AddressingModes::Absolute::XOffset(cpu, ram);";
+            case Addressing_t::Indirect_YOffset:    return "AddressingModes::Absolute::YOffset(cpu, ram);";
         }
     }
 };

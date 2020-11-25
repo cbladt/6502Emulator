@@ -31,12 +31,17 @@ namespace SixFiveOhTwo
 
         constexpr void SetEnable()
         {
-            _s.Enable = true;
+            _s.Enable = true;            
         }
 
         constexpr void SetDisable()
         {
             _s.Enable = false;
+        }
+
+        constexpr auto& GetRam()
+        {
+            return _ram;
         }
 
     private:
