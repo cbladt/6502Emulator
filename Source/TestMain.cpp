@@ -1,6 +1,7 @@
-#include "tst_x.h"
-
 #include <gtest/gtest.h>
+
+#include <Test/RamTest.hpp>
+#include <Test/CpuTest.hpp>
 
 int main(int argc, char *argv[])
 {

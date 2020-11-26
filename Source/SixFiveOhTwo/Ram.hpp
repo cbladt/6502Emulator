@@ -7,10 +7,16 @@ static constexpr const size_t RamSize = 0xFFFF;
 class Ram
 {
 public:
+    static const constexpr auto StackStart = 0x100;
+
     constexpr Ram() :
-        _data({0})
+        _data({0}),
+        _stackPointer(0)
     {};
     ~Ram() = default;
+
+    using Data = uint8_t;
+    using Address = uint16_t;
 
     constexpr Ram(const Ram&) = delete;
     constexpr Ram& operator=(const Ram&) = delete;
@@ -18,31 +24,38 @@ public:
     constexpr Ram(Ram&&) = delete;
     constexpr Ram& operator=(Ram&&) = delete;
 
-    constexpr uint8_t Read(uint16_t address)
+    constexpr Data Read(Address address)
     {
-        return _data.at(address);
+        return _data[address];
     }
 
-    constexpr uint8_t ReadIncrement(uint16_t& address)
+    constexpr void Write(Address address, Data data)
     {
-        auto data = _data.at(address);
-        address++;
-        return data;
+        _data[address] = data;
+    }    
+
+    constexpr void StackPush(Data value)
+    {
+        auto addr = StackStart - _stackPointer;
+        _stackPointer++;
+        Write(addr, value);
     }
 
-    constexpr void Write(uint16_t address, uint8_t data)
+    constexpr Data StackPop()
     {
-        _data.at(address) = data;
+        auto addr = StackStart - _stackPointer;
+        _stackPointer--;
+        return Read(addr);
     }
 
-    static const constexpr auto StackPointerStart = 0x100;
-
-    constexpr void PushToStack(uint8_t value, uint8_t& stackPointer)
+    template <typename Offset>
+    constexpr Data StackPeek(Offset offset)
     {
-        Write(StackPointerStart + stackPointer, value);
-        stackPointer--;
+        auto addr = StackStart - _stackPointer - offset;
+        return Read(addr);
     }
 
 private:
-    std::array<uint8_t, RamSize> _data;
+    std::array<Data, RamSize> _data;
+    uint8_t _stackPointer;
 };

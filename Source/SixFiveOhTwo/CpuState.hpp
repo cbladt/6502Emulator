@@ -6,7 +6,7 @@ namespace SixFiveOhTwo
     class CpuState
     {
     public:
-        CpuState() :
+        constexpr CpuState() :
             CarryBit(false),
             Zero(false),
             DisableInterrupt(false),
@@ -18,8 +18,7 @@ namespace SixFiveOhTwo
             A(0),
             X(0),
             Y(0),
-            Status(0),
-            StackPointer(0),
+            Status(0),            
             ProgramCounter(0),
             CyclesLeft(0),
             Opcode(0),
@@ -49,8 +48,7 @@ namespace SixFiveOhTwo
             A = 0;
             X = 0;
             Y = 0;
-            Status = 0;
-            StackPointer = 0;
+            Status = 0;            
             ProgramCounter = 0;
             CyclesLeft = 0;
             Opcode = 0;
@@ -69,8 +67,7 @@ namespace SixFiveOhTwo
         uint8_t A;
         uint8_t X;
         uint8_t Y;
-        uint8_t Status;
-        uint8_t StackPointer;
+        uint8_t Status;        
         uint16_t ProgramCounter;
         uint8_t CyclesLeft;
         uint8_t Opcode;

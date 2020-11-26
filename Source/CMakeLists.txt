@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(DoLogDebug ON)
+set(DoTest ON)
 
 set(Flags "-Werror -flto -Wl,-flto")
 set(FlagsDebug "-O0")
@@ -20,8 +21,29 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${FlagsRelease}")
 
 # Enable debug output.
 if (DoLogDebug)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DLOG_DEBUG")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDoLogDebug")
 endif (DoLogDebug)
+
+if (DoTest)
+    find_package(Threads REQUIRED)
+
+    set(GTestSrc ../googletest/googletest)
+    set(GMockSrc ../googletest/googlemock)
+    set(GTestFiles ${GTestSrc}/src/gtest-all.cc)
+    set(GTestIncludes ${GTestSrc} ${GTestSrc}/include)
+    if (NOT ${GMockSrc} STREQUAL "")
+        list(APPEND GTestFiles ${GMockSrc}/src/gmock-all.cc)
+        list(APPEND GTestIncludes ${GMockSrc} ${GMockSrc}/include)
+    endif ()
+
+    include_directories(${GTestIncludes})
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDoTest")
+
+    set(Source TestMain.cpp ${GTestFiles})
+else(DoTest)
+    set(Source Main.cpp)
+endif (DoTest)
 
 # Toolchain
 # TODO Move to seperate toolchain file?
@@ -47,6 +69,9 @@ add_subdirectory("Utility")
 add_subdirectory("SixFiveOhTwo")
 
 # Create Exe
-add_executable(${ProjectName} Main.cpp)
+add_executable(${ProjectName} ${Source})
 target_link_libraries(${ProjectName} UtilityLib)
 target_link_libraries(${ProjectName} SixFiveOhTwoLib)
+
+find_package(Threads REQUIRED)
+target_link_libraries(${ProjectName} Threads::Threads)

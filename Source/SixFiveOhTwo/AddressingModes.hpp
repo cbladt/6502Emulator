@@ -40,7 +40,8 @@ namespace SixFiveOhTwo::AddressingModes
         template <typename Cpu, typename Ram>
         bool NoOffset(Cpu& cpu, Ram& ram, Offset offset = 0)
         {
-            cpu.Temp = ram.ReadIncrement(cpu.ProgramCounter) + offset;
+            cpu.Temp = ram.Read(cpu.ProgramCounter) + offset;
+            cpu.ProgramCounter++;
 
             cpu.Temp &= 0x00F;
 
@@ -65,9 +66,11 @@ namespace SixFiveOhTwo::AddressingModes
         template <typename Cpu, typename Ram>
         bool NoOffset(Cpu& cpu, Ram& ram, Offset offset = 0)
         {
-            auto low = ram.ReadIncrement(cpu.ProgramCounter);
+            auto low = ram.Read(cpu.ProgramCounter);
+            cpu.ProgramCounter++;
 
-            auto high = ram.ReadIncrement(cpu.ProgramCounter);
+            auto high = ram.Read(cpu.ProgramCounter);
+            cpu.ProgramCounter++;
 
             cpu.Temp = (high << 8) | low;
             cpu.Temp += offset;

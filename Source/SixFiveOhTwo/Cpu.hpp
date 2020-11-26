@@ -44,14 +44,39 @@ namespace SixFiveOhTwo
             return _ram;
         }
 
+#ifndef DoTest
     private:
+#endif
+        constexpr void SetDebug()
+        {
+            _debug = true;
+        }
+
+        constexpr void StopDebug()
+        {
+            _debug = false;
+        }
+
+        constexpr void Step()
+        {
+            _step = true;
+        }
+
+        constexpr auto& GetInternalState()
+        {
+            return _s;
+        }
+
         static const constexpr auto ProgramCounterDefault = 0xFFFC;
         static const constexpr auto ProgramCounterInterrupt = 0xFFFE;
         static const constexpr auto ProgramCounterNonMaskInterrupt = 0xFFFA;
         static const constexpr auto StackPointerDefault = 0xFD;
 
+    private:
         CpuState _s;
         Ram _ram;
+        bool _debug;
+        bool _step;
 
         void MaybeClock();
         void Clock();

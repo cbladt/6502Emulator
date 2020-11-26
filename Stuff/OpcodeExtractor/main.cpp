@@ -7,7 +7,7 @@
 
 #include "Hell.hpp"
 
-static const constexpr auto Directory = "/media/cab/DATA/Projects/SomeEmulator/build-OpcodeExtractor-Desktop-Debug/Output/";
+static const constexpr auto Directory = "../Source/SixFiveOhTwo/Opcodes/Data/";
 
 void WriteFile(std::string name, std::string content)
 {
@@ -37,7 +37,7 @@ void GenerateHeaders(T opcodes)
 
         outfile << "\tnamespace _private" << std::endl;
         outfile << "\t{" <<std::endl;
-        outfile << "\t\t#include \""+ pair.first + ".impl.inc" +"\"" <<std::endl;
+        outfile << "\t\t#include \""+ pair.first + ".impl.hpp" +"\"" <<std::endl;
         outfile << "\t}" <<std::endl;
         outfile << std::endl;                
 
@@ -78,7 +78,7 @@ void GenerateImplementations(T opcodes)
         outfile << std::endl;
         outfile << "}" <<std::endl;
 
-        WriteFile(pair.first + ".impl.inc", outfile.str());
+        WriteFile(pair.first + ".impl.hpp", outfile.str());
     }
 }
 

@@ -3,7 +3,9 @@
 
 namespace SixFiveOhTwo
 {       
-    Cpu::Cpu()
+    Cpu::Cpu() :
+        _debug(false),
+        _step(true)
     {
         Reset();
     }
@@ -12,14 +14,13 @@ namespace SixFiveOhTwo
     {
         Log::Debug() << "Reset!" << Log::EndLine;
 
+        _s.RegisterReset();
+
         auto low = _ram.Read(ProgramCounterDefault);
         auto high = _ram.Read(ProgramCounterDefault + 1);
 
-        _s.ProgramCounter = (high << 8) | low;
+        _s.ProgramCounter = (high << 8) | low;        
 
-        _s.RegisterReset();
-
-        _s.ProgramCounter = ProgramCounterDefault;
         _s.Unused = true;
 
         _s.CyclesLeft = 8;
@@ -45,14 +46,14 @@ namespace SixFiveOhTwo
 
     void Cpu::DoInterrupt(uint16_t address)
     {
-        _ram.PushToStack((_s.ProgramCounter >> 8) & 0x00FF, _s.StackPointer);
-        _ram.PushToStack(_s.ProgramCounter & 0x00FF, _s.StackPointer);
+        _ram.StackPush((_s.ProgramCounter >> 8) & 0x00FF);
+        _ram.StackPush(_s.ProgramCounter & 0x00FF);
 
         _s.Break = false;
         _s.Unused = true;
         _s.DisableInterrupt = true;
 
-        _ram.PushToStack(_s.Status, _s.StackPointer);
+        _ram.StackPush(_s.Status);
 
         auto pcLow = _ram.Read(address);
         auto pcHigh = _ram.Read(address + 1);
@@ -63,7 +64,8 @@ namespace SixFiveOhTwo
 
     void Cpu::Clock()
     {
-        _s.Opcode = _ram.ReadIncrement(_s.ProgramCounter);
+        _s.Opcode = _ram.Read(_s.ProgramCounter);
+        _s.ProgramCounter++;
 
         _s.Unused = true;
 
@@ -82,7 +84,7 @@ namespace SixFiveOhTwo
 
     void Cpu::Fire()
     {        
-        if (_s.Enable)
+        if (_s.Enable || (_debug && _step))
         {
             MaybeClock();
         }
