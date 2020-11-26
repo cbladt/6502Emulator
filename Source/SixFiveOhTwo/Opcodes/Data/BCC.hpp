@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BCC
 {
 	namespace _private
 	{
-		#include "BCC.impl.inc"
+		#include "BCC.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 144;

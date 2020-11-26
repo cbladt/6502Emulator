@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::LDX
 {
 	namespace _private
 	{
-		#include "LDX.impl.inc"
+		#include "LDX.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 162;

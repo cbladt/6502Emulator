@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::PLA
 {
 	namespace _private
 	{
-		#include "PLA.impl.inc"
+		#include "PLA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 104;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::CMP
 {
 	namespace _private
 	{
-		#include "CMP.impl.inc"
+		#include "CMP.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 193;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::TSX
 {
 	namespace _private
 	{
-		#include "TSX.impl.inc"
+		#include "TSX.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 186;

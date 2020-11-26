@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::ROLA
 {
 	namespace _private
 	{
-		#include "ROLA.impl.inc"
+		#include "ROLA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 42;

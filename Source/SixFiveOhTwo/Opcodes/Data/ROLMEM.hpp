@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::ROLMEM
 {
 	namespace _private
 	{
-		#include "ROLMEM.impl.inc"
+		#include "ROLMEM.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 38;

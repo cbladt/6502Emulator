@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::SED
 {
 	namespace _private
 	{
-		#include "SED.impl.inc"
+		#include "SED.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 248;

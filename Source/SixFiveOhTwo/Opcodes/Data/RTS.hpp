@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::RTS
 {
 	namespace _private
 	{
-		#include "RTS.impl.inc"
+		#include "RTS.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 96;

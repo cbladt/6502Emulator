@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::CPY
 {
 	namespace _private
 	{
-		#include "CPY.impl.inc"
+		#include "CPY.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 192;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::RORMEM
 {
 	namespace _private
 	{
-		#include "RORMEM.impl.inc"
+		#include "RORMEM.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 102;

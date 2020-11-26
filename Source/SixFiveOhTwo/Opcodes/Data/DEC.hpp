@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::DEC
 {
 	namespace _private
 	{
-		#include "DEC.impl.inc"
+		#include "DEC.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 198;

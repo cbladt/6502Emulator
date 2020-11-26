@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BIT
 {
 	namespace _private
 	{
-		#include "BIT.impl.inc"
+		#include "BIT.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 36;

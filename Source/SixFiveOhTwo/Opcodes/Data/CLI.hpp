@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::CLI
 {
 	namespace _private
 	{
-		#include "CLI.impl.inc"
+		#include "CLI.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 88;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::RTI
 {
 	namespace _private
 	{
-		#include "RTI.impl.inc"
+		#include "RTI.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 64;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::STA
 {
 	namespace _private
 	{
-		#include "STA.impl.inc"
+		#include "STA.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 129;

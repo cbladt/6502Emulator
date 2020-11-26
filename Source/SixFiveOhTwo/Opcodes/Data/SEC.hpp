@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::SEC
 {
 	namespace _private
 	{
-		#include "SEC.impl.inc"
+		#include "SEC.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 56;

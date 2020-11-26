@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::TYA
 {
 	namespace _private
 	{
-		#include "TYA.impl.inc"
+		#include "TYA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 152;

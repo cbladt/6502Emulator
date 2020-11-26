@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::LSRA
 {
 	namespace _private
 	{
-		#include "LSRA.impl.inc"
+		#include "LSRA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 74;

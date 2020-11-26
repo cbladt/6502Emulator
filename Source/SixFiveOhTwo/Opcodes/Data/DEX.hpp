@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::DEX
 {
 	namespace _private
 	{
-		#include "DEX.impl.inc"
+		#include "DEX.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 202;

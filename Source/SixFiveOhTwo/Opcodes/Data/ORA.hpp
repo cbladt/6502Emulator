@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::ORA
 {
 	namespace _private
 	{
-		#include "ORA.impl.inc"
+		#include "ORA.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 1;

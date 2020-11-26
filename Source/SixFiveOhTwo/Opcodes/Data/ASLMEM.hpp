@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::ASLMEM
 {
 	namespace _private
 	{
-		#include "ASLMEM.impl.inc"
+		#include "ASLMEM.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 6;

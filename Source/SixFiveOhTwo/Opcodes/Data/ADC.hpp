@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::ADC
 {
 	namespace _private
 	{
-		#include "ADC.impl.inc"
+		#include "ADC.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 97;

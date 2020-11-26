@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::TAX
 {
 	namespace _private
 	{
-		#include "TAX.impl.inc"
+		#include "TAX.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 170;

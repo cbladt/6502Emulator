@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::JSR
 {
 	namespace _private
 	{
-		#include "JSR.impl.inc"
+		#include "JSR.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 32;

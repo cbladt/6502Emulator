@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::LDY
 {
 	namespace _private
 	{
-		#include "LDY.impl.inc"
+		#include "LDY.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 160;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::DEY
 {
 	namespace _private
 	{
-		#include "DEY.impl.inc"
+		#include "DEY.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 136;

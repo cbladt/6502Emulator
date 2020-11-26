@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::CPX
 {
 	namespace _private
 	{
-		#include "CPX.impl.inc"
+		#include "CPX.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 224;

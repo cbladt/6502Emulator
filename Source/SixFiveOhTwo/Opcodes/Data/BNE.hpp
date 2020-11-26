@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BNE
 {
 	namespace _private
 	{
-		#include "BNE.impl.inc"
+		#include "BNE.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 208;

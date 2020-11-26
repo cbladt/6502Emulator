@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BPL
 {
 	namespace _private
 	{
-		#include "BPL.impl.inc"
+		#include "BPL.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 16;

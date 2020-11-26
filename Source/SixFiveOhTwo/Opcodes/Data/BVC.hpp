@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BVC
 {
 	namespace _private
 	{
-		#include "BVC.impl.inc"
+		#include "BVC.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 80;

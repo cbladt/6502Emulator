@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::NOP
 {
 	namespace _private
 	{
-		#include "NOP.impl.inc"
+		#include "NOP.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 234;

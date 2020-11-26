@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::INX
 {
 	namespace _private
 	{
-		#include "INX.impl.inc"
+		#include "INX.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 232;

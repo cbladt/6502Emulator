@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BEQ
 {
 	namespace _private
 	{
-		#include "BEQ.impl.inc"
+		#include "BEQ.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 240;

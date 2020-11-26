@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::CLV
 {
 	namespace _private
 	{
-		#include "CLV.impl.inc"
+		#include "CLV.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 184;

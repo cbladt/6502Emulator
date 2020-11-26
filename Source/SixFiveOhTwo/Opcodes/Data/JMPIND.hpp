@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::JMPIND
 {
 	namespace _private
 	{
-		#include "JMPIND.impl.inc"
+		#include "JMPIND.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 108;

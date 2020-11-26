@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BRK
 {
 	namespace _private
 	{
-		#include "BRK.impl.inc"
+		#include "BRK.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 0;

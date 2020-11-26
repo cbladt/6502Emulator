@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::EOR
 {
 	namespace _private
 	{
-		#include "EOR.impl.inc"
+		#include "EOR.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 65;

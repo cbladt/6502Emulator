@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::ASLA
 {
 	namespace _private
 	{
-		#include "ASLA.impl.inc"
+		#include "ASLA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 10;

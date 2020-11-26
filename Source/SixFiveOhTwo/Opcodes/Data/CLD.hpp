@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::CLD
 {
 	namespace _private
 	{
-		#include "CLD.impl.inc"
+		#include "CLD.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 216;

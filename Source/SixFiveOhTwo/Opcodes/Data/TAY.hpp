@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::TAY
 {
 	namespace _private
 	{
-		#include "TAY.impl.inc"
+		#include "TAY.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 168;

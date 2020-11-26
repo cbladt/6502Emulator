@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::RORA
 {
 	namespace _private
 	{
-		#include "RORA.impl.inc"
+		#include "RORA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 106;

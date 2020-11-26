@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::BMI
 {
 	namespace _private
 	{
-		#include "BMI.impl.inc"
+		#include "BMI.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 48;

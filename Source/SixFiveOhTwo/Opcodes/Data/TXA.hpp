@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::TXA
 {
 	namespace _private
 	{
-		#include "TXA.impl.inc"
+		#include "TXA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 138;

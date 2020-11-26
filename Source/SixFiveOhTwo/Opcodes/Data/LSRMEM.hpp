@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::LSRMEM
 {
 	namespace _private
 	{
-		#include "LSRMEM.impl.inc"
+		#include "LSRMEM.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 70;

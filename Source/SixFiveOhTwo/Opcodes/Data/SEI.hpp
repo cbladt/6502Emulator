@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::SEI
 {
 	namespace _private
 	{
-		#include "SEI.impl.inc"
+		#include "SEI.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 120;

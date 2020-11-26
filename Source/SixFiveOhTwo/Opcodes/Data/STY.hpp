@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::STY
 {
 	namespace _private
 	{
-		#include "STY.impl.inc"
+		#include "STY.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 132;

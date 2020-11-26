@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::PHA
 {
 	namespace _private
 	{
-		#include "PHA.impl.inc"
+		#include "PHA.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 72;

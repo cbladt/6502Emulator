@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::STX
 {
 	namespace _private
 	{
-		#include "STX.impl.inc"
+		#include "STX.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 134;

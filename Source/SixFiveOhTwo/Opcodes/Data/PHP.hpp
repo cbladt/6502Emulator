@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::PHP
 {
 	namespace _private
 	{
-		#include "PHP.impl.inc"
+		#include "PHP.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 8;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::AND
 {
 	namespace _private
 	{
-		#include "AND.impl.inc"
+		#include "AND.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 33;

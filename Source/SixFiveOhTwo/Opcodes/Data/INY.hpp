@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::INY
 {
 	namespace _private
 	{
-		#include "INY.impl.inc"
+		#include "INY.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 200;

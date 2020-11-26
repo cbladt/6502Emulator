@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::SBC
 {
 	namespace _private
 	{
-		#include "SBC.impl.inc"
+		#include "SBC.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 225;

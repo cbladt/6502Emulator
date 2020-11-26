@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::TXS
 {
 	namespace _private
 	{
-		#include "TXS.impl.inc"
+		#include "TXS.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 154;

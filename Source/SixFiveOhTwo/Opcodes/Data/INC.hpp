@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::INC
 {
 	namespace _private
 	{
-		#include "INC.impl.inc"
+		#include "INC.impl.hpp"
 	}
 
 	static const constexpr auto ZeroPageOpCode = 230;

@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::PLP
 {
 	namespace _private
 	{
-		#include "PLP.impl.inc"
+		#include "PLP.impl.hpp"
 	}
 
 	static const constexpr auto ImpliedOpCode = 40;

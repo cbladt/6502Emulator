@@ -4,7 +4,7 @@ namespace SixFiveOhTwo::Opcodes::LDA
 {
 	namespace _private
 	{
-		#include "LDA.impl.inc"
+		#include "LDA.impl.hpp"
 	}
 
 	static const constexpr auto IndirectXOffsetOpCode = 161;
