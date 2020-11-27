@@ -5,50 +5,94 @@ namespace SixFiveOhTwo
 {
     class CpuState
     {
+    private:
+        enum Flag_t
+        {
+            eCarryBit,
+            eZero,
+            eDisableInterrupt,
+            eDecimalMode,
+            eBreak,
+            eUnused,
+            eOverflow,
+            eNegative,
+        };
+
+        template <Flag_t Flag>
+        class FlagRegister
+        {
+        public:
+            constexpr FlagRegister(uint8_t& reg) :
+                _register(reg)
+            {}
+            ~FlagRegister() = default;
+
+            constexpr FlagRegister(const FlagRegister&) = delete;
+            constexpr FlagRegister& operator=(const FlagRegister&) = delete;
+
+            constexpr FlagRegister(FlagRegister&&) = delete;
+            constexpr FlagRegister& operator=(FlagRegister&&) = delete;
+
+            constexpr void Set(bool value)
+            {
+                if (value)
+                {
+                    _register |= Flag;
+                }
+                else
+                {
+                    _register &= ~Flag;
+                }
+            }
+
+            constexpr bool Get() const
+            {
+                return _register & Flag;
+            }
+
+            constexpr operator bool() const
+            {
+                return Get();
+            }
+
+            constexpr void operator=(bool value)
+            {
+                Set(value);
+            }
+        private:
+            uint8_t& _register;
+        };
+
     public:
         constexpr CpuState() :
-            CarryBit(false),
-            Zero(false),
-            DisableInterrupt(false),
-            DecimalMode(false),
-            Break(false),
-            Unused(false),
-            Overflow(false),
-            Negative(false),
+            CarryBit(Status),
+            Zero(Status),
+            DisableInterrupt(Status),
+            DecimalMode(Status),
+            Break(Status),
+            Unused(Status),
+            Overflow(Status),
+            Negative(Status),
             A(0),
             X(0),
             Y(0),
-            Status(0),            
+            Status(0),
             ProgramCounter(0),
             CyclesLeft(0),
             Opcode(0),
             Temp(0),
             Enable(false)
         {
-            RegisterReset();
+            Reset(); // Redundant.
         }
         ~CpuState() = default;
 
-        CpuState(const CpuState&) = delete;
-        CpuState& operator=(const CpuState&) = delete;
-
-        CpuState(CpuState&&) = delete;
-        CpuState& operator=(CpuState&&) = delete;
-
-        constexpr void RegisterReset()
+        constexpr void Reset()
         {
-            CarryBit= false;
-            Zero= false;
-            DisableInterrupt= false;
-            DecimalMode= false;
-            Break= false;
-            Unused= false;
-            Overflow= false;
-            Negative= false;
             A = 0;
             X = 0;
             Y = 0;
-            Status = 0;            
+            Status = 0;
             ProgramCounter = 0;
             CyclesLeft = 0;
             Opcode = 0;
@@ -56,14 +100,15 @@ namespace SixFiveOhTwo
             Enable = false;
         }
 
-        bool CarryBit;
-        bool Zero;
-        bool DisableInterrupt;
-        bool DecimalMode;
-        bool Break;
-        bool Unused;
-        bool Overflow;
-        bool Negative;
+        FlagRegister<eCarryBit> CarryBit;
+        FlagRegister<eZero> Zero;
+        FlagRegister<eDisableInterrupt> DisableInterrupt;
+        FlagRegister<eDecimalMode> DecimalMode;
+        FlagRegister<eBreak> Break;
+        FlagRegister<eUnused> Unused;
+        FlagRegister<eOverflow> Overflow;
+        FlagRegister<eNegative> Negative;
+
         uint8_t A;
         uint8_t X;
         uint8_t Y;
@@ -73,5 +118,12 @@ namespace SixFiveOhTwo
         uint8_t Opcode;
         uint8_t Temp;
         bool Enable;
+
+    private:
+        constexpr CpuState(const CpuState&) = delete;
+        constexpr CpuState& operator=(const CpuState&) = delete;
+
+        constexpr CpuState(CpuState&&) = delete;
+        constexpr CpuState& operator=(CpuState&&) = delete;
     };
 }

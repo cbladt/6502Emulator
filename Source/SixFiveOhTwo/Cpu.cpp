@@ -4,6 +4,7 @@
 namespace SixFiveOhTwo
 {       
     Cpu::Cpu() :
+        _stack(_ram),
         _debug(false),
         _step(true)
     {
@@ -14,7 +15,7 @@ namespace SixFiveOhTwo
     {
         Log::Debug() << "Reset!" << Log::EndLine;
 
-        _s.RegisterReset();
+        _s.Reset();
 
         auto low = _ram.Read(ProgramCounterDefault);
         auto high = _ram.Read(ProgramCounterDefault + 1);
@@ -46,14 +47,14 @@ namespace SixFiveOhTwo
 
     void Cpu::DoInterrupt(uint16_t address)
     {
-        _ram.StackPush((_s.ProgramCounter >> 8) & 0x00FF);
-        _ram.StackPush(_s.ProgramCounter & 0x00FF);
+        _stack.Push((_s.ProgramCounter >> 8) & 0x00FF);
+        _stack.Push(_s.ProgramCounter & 0x00FF);
 
         _s.Break = false;
         _s.Unused = true;
         _s.DisableInterrupt = true;
 
-        _ram.StackPush(_s.Status);
+        _stack.Push(_s.Status);
 
         auto pcLow = _ram.Read(address);
         auto pcHigh = _ram.Read(address + 1);

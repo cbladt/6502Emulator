@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <Test/RamTest.hpp>
+#include <Test/MemoryTest.hpp>
 #include <Test/CpuTest.hpp>
 
 int main(int argc, char *argv[])

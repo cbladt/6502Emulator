@@ -5,7 +5,7 @@
 #include <Clock.hpp>
 #include <Log.hpp>
 
-#include <Ram.hpp>
+#include <Memory.hpp>
 #include <CpuState.hpp>
 
 namespace SixFiveOhTwo
@@ -44,6 +44,11 @@ namespace SixFiveOhTwo
             return _ram;
         }
 
+        constexpr auto& GetStack()
+        {
+            return _stack;
+        }
+
 #ifndef DoTest
     private:
 #endif
@@ -74,7 +79,9 @@ namespace SixFiveOhTwo
 
     private:
         CpuState _s;
-        Ram _ram;
+        Memory::Ram _ram;
+        Memory::Stack _stack;
+
         bool _debug;
         bool _step;
 
