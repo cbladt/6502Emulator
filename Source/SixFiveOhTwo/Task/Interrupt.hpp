@@ -35,6 +35,7 @@ namespace SixFiveOhTwo::Task
 				case 6:
 				{
 					_bus.Write((_cpuProgramCounter >> 8) & 0x00FF);
+
 					_bus.SetAddress(_cpu.StackPointer);
 					_cpu.StackPointer--;
 					break;
@@ -43,10 +44,6 @@ namespace SixFiveOhTwo::Task
 				case 5:
 				{
 					_bus.Write(_s.ProgramCounter & 0x00FF);
-
-					_s.Break = false;
-					_s.Unused = true;
-					_s.DisableInterrupt = true;
 
 					_bus.SetAddress(_cpu.StackPointer);
 					_cpu.StackPointer--;
@@ -64,13 +61,21 @@ namespace SixFiveOhTwo::Task
 				case 3:
 				{
 					_pcLow = _bus.Read();
+
 					_bus.SetAddress(_interruptAddress + 1);
 				}
 
 				case 2:
 				{
 					_pcHigh = _bus.Read();
+				}
+
+				case 1:
+				{
 					_cpu.ProgramCounter = (_pcHigh << 8) | _pcLow;
+					_s.Break = false;
+					_s.Unused = true;
+					_s.DisableInterrupt = true;
 				}
 
 
