@@ -76,6 +76,7 @@ namespace SixFiveOhTwo
             A(0),
             X(0),
             Y(0),
+            StackPointer(0x01ff),
             Status(0),
             ProgramCounter(0),
             CyclesLeft(0),
@@ -92,12 +93,13 @@ namespace SixFiveOhTwo
             A = 0;
             X = 0;
             Y = 0;
+            StackPointer = 0x01ff;
             Status = 0;
             ProgramCounter = 0;
             CyclesLeft = 0;
             Opcode = 0;
             Temp = 0;
-            Enable = false;
+            Enable = false;            
         }
 
         FlagRegister<eCarryBit> CarryBit;
@@ -114,10 +116,16 @@ namespace SixFiveOhTwo
         uint8_t Y;
         uint8_t Status;        
         uint16_t ProgramCounter;
+        uint16_t StackPointer;
         uint8_t CyclesLeft;
         uint8_t Opcode;
         uint8_t Temp;
         bool Enable;
+
+        static const constexpr auto ProgramCounterDefault = 0xFFFC;
+        static const constexpr auto ProgramCounterInterrupt = 0xFFFE;
+        static const constexpr auto ProgramCounterNonMaskInterrupt = 0xFFFA;
+        static const constexpr auto StackPointerDefault = 0xFD;
 
     private:
         constexpr CpuState(const CpuState&) = delete;

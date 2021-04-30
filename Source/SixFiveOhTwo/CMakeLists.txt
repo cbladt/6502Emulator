@@ -7,7 +7,7 @@ set(SixFiveOhTwoSource
 set(SixFiveOhTwoHeader
     "Cpu.hpp"
     "CpuState.hpp"
-    "Ram.hpp"
+	"Memory.hpp"
     "AddressingModes.hpp"
     "Opcodes/Opcodes.hpp"    
 )

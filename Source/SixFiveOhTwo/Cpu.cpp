@@ -13,25 +13,14 @@ namespace SixFiveOhTwo
 
     void Cpu::Reset()
     {
-        Log::Debug() << "Reset!" << Log::EndLine;
 
-        _s.Reset();
-
-        auto low = _ram.Read(ProgramCounterDefault);
-        auto high = _ram.Read(ProgramCounterDefault + 1);
-
-        _s.ProgramCounter = (high << 8) | low;        
-
-        _s.Unused = true;
-
-        _s.CyclesLeft = 8;
     }
 
     bool Cpu::InterruptRequest()
     {
         if (!_s.DisableInterrupt)
         {
-            DoInterrupt(ProgramCounterInterrupt);
+            DoInterrupt(_s.ProgramCounterInterrupt);
             return true;
         }
         else
@@ -42,25 +31,12 @@ namespace SixFiveOhTwo
 
     void Cpu::Interrupt()
     {
-        DoInterrupt(ProgramCounterNonMaskInterrupt);
+        DoInterrupt(_s.ProgramCounterNonMaskInterrupt);
     }
 
     void Cpu::DoInterrupt(uint16_t address)
     {
-        _stack.Push((_s.ProgramCounter >> 8) & 0x00FF);
-        _stack.Push(_s.ProgramCounter & 0x00FF);
 
-        _s.Break = false;
-        _s.Unused = true;
-        _s.DisableInterrupt = true;
-
-        _stack.Push(_s.Status);
-
-        auto pcLow = _ram.Read(address);
-        auto pcHigh = _ram.Read(address + 1);
-        _s.ProgramCounter = (pcHigh << 8) | pcLow;
-
-        _s.CyclesLeft = 7;
     }
 
     void Cpu::Clock()

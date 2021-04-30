@@ -39,16 +39,6 @@ namespace SixFiveOhTwo
             _s.Enable = false;
         }
 
-        constexpr auto& GetRam()
-        {
-            return _ram;
-        }
-
-        constexpr auto& GetStack()
-        {
-            return _stack;
-        }
-
 #ifndef DoTest
     private:
 #endif
@@ -72,15 +62,14 @@ namespace SixFiveOhTwo
             return _s;
         }
 
-        static const constexpr auto ProgramCounterDefault = 0xFFFC;
-        static const constexpr auto ProgramCounterInterrupt = 0xFFFE;
-        static const constexpr auto ProgramCounterNonMaskInterrupt = 0xFFFA;
-        static const constexpr auto StackPointerDefault = 0xFD;
-
     private:
+        enum class Task
+        {
+            Resetting,
+            Interrupting
+        };
+
         CpuState _s;
-        Memory::Ram _ram;
-        Memory::Stack _stack;
 
         bool _debug;
         bool _step;
